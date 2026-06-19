@@ -47,8 +47,30 @@ make real    # 05 real squads → 06 fit on real intl results → 07 Mexico asse
   2022–present) instead of synthetic matches → `posterior_strength_real.csv`.
 - Stage 07 produces `data/processed/mexico_assessment.md`: Bayesian strength
   rank, real squad profile, **formation analysis** (4-4-2 vs 4-3-3 vs the
-  scouted 4-1-4-1), recent form, and key players — with public-source citations
-  encoded in [`data/scouting.py`](src/wc2026/data/scouting.py).
+  scouted 4-1-4-1), recent form, key players, and a **media + X/social sentiment**
+  layer — with public-source citations encoded in
+  [`data/scouting.py`](src/wc2026/data/scouting.py).
+
+### Optional: live X (Twitter) sentiment
+
+X moved to **pay-per-use** in 2026 (~$0.005/post read, with a one-time $10
+credit for migrated accounts), so a small test is cheap — a 100-post pull is
+~$0.50. [`scripts/08_collect_x.py`](scripts/08_collect_x.py) is budget-safe:
+hard-capped at 100 posts/run, prints a cost estimate, and has a `--probe` mode
+that confirms your key for pennies.
+
+```bash
+pip install tweepy
+export X_BEARER_TOKEN="AAAA..."
+python scripts/08_collect_x.py --probe                  # ~$0.06 auth+read test
+python scripts/08_collect_x.py --query "Mexico World Cup" --max 50 --lang en
+```
+
+It saves to `data/raw/x_<query>.json`; stage 07 auto-detects that file and folds
+the live sentiment into the Mexico report. The sentiment scorer
+([`data/x_collector.py`](src/wc2026/data/x_collector.py)) is a transparent
+lexicon by default — swap `score_text` for a model (HF transformers or the
+Claude API) for production accuracy.
 
 > **Data note.** Ships with a *synthetic* data generator so the whole pipeline
 > runs offline. Each generator function in `src/wc2026/data/generate_synthetic.py`

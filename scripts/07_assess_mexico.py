@@ -24,6 +24,22 @@ def _ordinal(n: int) -> str:
     return f"{n}{suffix}"
 
 
+def _load_live_x():
+    """Pick up live X data if scripts/08_collect_x.py was run (else None)."""
+    import json
+
+    from wc2026.config import RAW
+    from wc2026.data.x_collector import summarize_for_scouting
+
+    path = RAW / "x_mexico_world_cup.json"
+    if not path.exists():
+        return None
+    try:
+        return summarize_for_scouting(json.loads(path.read_text()))
+    except Exception:
+        return None
+
+
 def main() -> None:
     ensure_dirs()
     players = pd.read_csv(PROCESSED / "players_real_features.csv")
@@ -156,6 +172,18 @@ def _render(rank, n, srow, profile, tactics, fit, squad) -> str:
     for nval in sm["negative"]:
         L.append(f"- {nval}")
     L.append(f"\n_{sm['caveat']}_\n")
+
+    # Live X data, IF you ran scripts/08_collect_x.py (file present in data/raw/).
+    live = _load_live_x()
+    if live:
+        L.append("### Live X sample (collected via X API)\n")
+        L.append(f"Net mood **{live['net_mood']}** from {live['n']} posts "
+                 f"(+{live['pos']} / -{live['neg']} / ={live['neutral']}).\n")
+        for t in live["positive"][:2]:
+            L.append(f"- 👍 {t}")
+        for t in live["negative"][:2]:
+            L.append(f"- 👎 {t}")
+        L.append(f"\n_{live.get('caveat', '')}_\n")
 
     # 4c. Projected knockout path (Opta via SI)
     kp = m["knockout_path"]

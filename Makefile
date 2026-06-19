@@ -33,6 +33,10 @@ real-fit:
 mexico:
 	$(PY) scripts/07_assess_mexico.py
 
+card:
+	$(PY) scripts/09_social_card.py --handle $(HANDLE)
+HANDLE ?= @your_handle
+
 # Real player data -> real-match fit -> Mexico assessment.
 real: real-players real-fit mexico
 

@@ -100,6 +100,30 @@ def test_tactics():
     assert res["strongest_line"] in {"defence", "midfield", "attack"}
 
 
+def test_x_collector_pure_helpers():
+    """Sentiment + cost + summary work WITHOUT tweepy or a network."""
+    from wc2026.data import x_collector as xc
+
+    assert xc.score_text("Mexico win, what a brilliant clean sheet!") > 0
+    assert xc.score_text("awful, boring, lucky and overrated") < 0
+    assert xc.score_text("Mexico plays South Korea tonight") == 0
+
+    # 50 posts + 1 user read at pay-per-use rates.
+    assert xc.estimate_cost(50, n_users=1) == round(50 * 0.005 + 0.010, 4)
+
+    fake = [
+        {"text": "what a win, brilliant and solid!", "like_count": 9},
+        {"text": "proud, amazing, deserved", "like_count": 5},
+        {"text": "boring, lucky, awful", "like_count": 3},
+        {"text": "Mexico vs South Korea today", "like_count": 1},
+    ]
+    s = xc.summarize_for_scouting(fake)
+    assert s["n"] == 4 and s["pos"] == 2 and s["neg"] == 1 and s["neutral"] == 1
+    assert s["net_mood"] in {"strongly positive", "leaning positive", "mixed",
+                             "leaning negative", "strongly negative"}
+    assert xc.summarize_for_scouting([])["n"] == 0
+
+
 def test_model_fits_tiny():
     """A minimal NUTS run just to prove the model compiles and samples."""
     import pymc as pm  # imported here so non-model tests don't pay the cost

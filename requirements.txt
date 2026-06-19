@@ -12,3 +12,7 @@ matplotlib>=3.8
 
 # Dev / testing
 pytest>=8.0
+
+# Optional: X (Twitter) sentiment collector (scripts/08_collect_x.py)
+# Install only if you have X API credentials:  pip install tweepy
+# tweepy>=4.14

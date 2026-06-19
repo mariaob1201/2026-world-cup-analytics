@@ -48,11 +48,23 @@ INTL_RESULTS_URL = (
 )
 INTL_RESULTS_LOCAL = RAW / "intl_results.csv"
 
-# Our team name -> the nationality string used in the FIFA dataset.
-NATIONALITY_ALIASES = {
+# Our team name (martj42 convention) -> nationality string in the FIFA dataset.
+FIFA_NATION_ALIASES = {
     "South Korea": "Korea Republic",
+    "Czechia": "Czech Republic",
+    "Türkiye": "Turkey",
+    "Curaçao": "Curacao",
     "Ivory Coast": "Côte d'Ivoire",
-    "United States": "United States",
+    "Cape Verde": "Cape Verde Islands",
+    "Bosnia-Herzegovina": "Bosnia and Herzegovina",
+}
+
+# Our team name -> the name used in the martj42 international-results dataset.
+INTL_NAME_ALIASES = {
+    "Czechia": "Czech Republic",
+    "Bosnia-Herzegovina": "Bosnia and Herzegovina",
+    "Türkiye": "Turkey",
+    "Congo DR": "DR Congo",
 }
 
 # FIFA's six skill columns -> our schema's columns.
@@ -100,8 +112,13 @@ def build_real_matches(start: str = "2022-01-01", end: str = "2026-06-19") -> pd
     df = df.dropna(subset=["home_score", "away_score"])
     df = df[(df["date"] >= start) & (df["date"] <= end)]
 
-    valid = {t.name for t in TEAMS}
-    df = df[df["home_team"].isin(valid) & df["away_team"].isin(valid)].copy()
+    # Map our canonical names to this dataset's names, filter, then map back.
+    to_src = {t.name: INTL_NAME_ALIASES.get(t.name, t.name) for t in TEAMS}
+    from_src = {v: k for k, v in to_src.items()}
+    src_names = set(from_src)
+    df = df[df["home_team"].isin(src_names) & df["away_team"].isin(src_names)].copy()
+    df["home_team"] = df["home_team"].map(from_src)
+    df["away_team"] = df["away_team"].map(from_src)
     df = df.sort_values("date").reset_index(drop=True)
 
     return pd.DataFrame({
@@ -165,7 +182,7 @@ def build_real_squads(squad_size: int = SQUAD_SIZE) -> pd.DataFrame:
     rows: list[pd.DataFrame] = []
     missing: list[str] = []
     for team in TEAMS:
-        nat = NATIONALITY_ALIASES.get(team.name, team.name)
+        nat = FIFA_NATION_ALIASES.get(team.name, team.name)
         pool = fifa[fifa["nationality_name"] == nat]
         if pool.empty:
             missing.append(team.name)
