@@ -49,6 +49,10 @@ simulate-real:
 champion:
 	$(PY) scripts/16_champion_tracker.py
 
+# Fetch real current squads from Wikipedia (fixes vintage rosters).
+live-squads:
+	$(PY) scripts/17_live_squads.py
+
 # Backtest + forecast, then tracking charts/sentiment/tactics. Re-run each matchday.
 track:
 	$(PY) scripts/13_match_predictions.py

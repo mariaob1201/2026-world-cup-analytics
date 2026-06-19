@@ -226,6 +226,40 @@ def test_simulation_conditions_on_results():
     assert pa >= pb   # the fixed winner advances at least as often
 
 
+def test_live_squads_parser():
+    """Wikitext squad parser is pure and offline-testable."""
+    from wc2026.data.live_squads import parse_squads
+
+    wt = (
+        "==Group A==\n"
+        "===Mexico===\n"
+        "{{nat fs g player|no=1|pos=GK|name=[[Guillermo Ochoa]]|"
+        "age={{birth date and age2|2026|6|11|1985|7|13}}|caps=152|goals=0|"
+        "club=[[AEL Limassol]]|clubnat=CYP}}\n"
+        "{{nat fs g player|no=9|pos=FW|name=[[Raúl Jiménez (footballer)|Raúl Jiménez]]|"
+        "age={{birth date and age2|2026|6|11|1991|5|5}}|caps=124|goals=40|"
+        "club=[[Fulham F.C.|Fulham]]|clubnat=ENG}}\n"
+        "===Notateam===\n"
+        "{{nat fs g player|no=1|pos=GK|name=[[Someone]]|caps=1}}\n"
+    )
+    df = parse_squads(wt)
+    assert set(df["team"]) == {"Mexico"}          # non-team header ignored
+    j = df[df["name"] == "Raúl Jiménez"].iloc[0]   # disambiguation stripped
+    assert j["position"] == "FW" and j["caps"] == 124 and j["age"] == 35
+
+
+def test_llm_extract_fallback():
+    """Feature extractor returns a neutral stub without an LLM, and maps signal."""
+    from wc2026.models.llm_extract import extract_features, momentum_from_features
+
+    f = extract_features("Mexico look sharp ahead of the next match.", team="Mexico")
+    sig = getattr(f, "momentum_signal", None)
+    if sig is None:
+        sig = f["momentum_signal"]
+    assert sig == 0.0
+    assert abs(momentum_from_features(f)) <= 0.10
+
+
 def test_model_fits_tiny():
     """A minimal NUTS run just to prove the model compiles and samples."""
     import pymc as pm  # imported here so non-model tests don't pay the cost
