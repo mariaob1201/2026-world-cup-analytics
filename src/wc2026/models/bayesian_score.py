@@ -138,6 +138,57 @@ def fit(
                      team_to_idx={t: i for i, t in enumerate(teams)})
 
 
+def predict_match(idata, teams, home, away, neutral=True, max_goals=8):
+    """Posterior-predictive GOAL forecast for one fixture.
+
+    This is the goals-vs-winners answer made explicit. For every posterior draw
+    we form each side's Poisson rate λ = exp(intercept [+ home_adv] + att - def),
+    build the scoreline probability matrix, and average over draws — so the
+    result carries the model's parameter uncertainty, not a point estimate.
+
+    Returns expected goals, the most-likely scoreline, the full 1X2 split, and
+    common betting-style markets (over 2.5, both-teams-to-score).
+    """
+    import numpy as np
+    from scipy.stats import poisson
+
+    post = idata.posterior
+    i, j = teams.index(home), teams.index(away)
+    flat = lambda v: post[v].to_numpy().reshape(-1, *post[v].shape[2:])
+    intercept = flat("intercept")
+    home_adv = flat("home_adv") if not neutral else 0.0
+    att = flat("att_eff")          # (draws, team)
+    deff = flat("def")
+
+    lam_h = np.exp(intercept + home_adv + att[:, i] - deff[:, j])
+    lam_a = np.exp(intercept + att[:, j] - deff[:, i])
+
+    g = np.arange(max_goals + 1)
+    # Joint scoreline matrix: average the per-draw outer products (shared λ per
+    # draw induces realistic correlation between the two scores).
+    M = np.zeros((max_goals + 1, max_goals + 1))
+    ph = np.stack([poisson.pmf(x, lam_h) for x in g])   # (goals, draws)
+    pa = np.stack([poisson.pmf(y, lam_a) for y in g])
+    for x in g:
+        for y in g:
+            M[x, y] = np.mean(ph[x] * pa[y])
+    M /= M.sum()
+
+    hx, ax = np.unravel_index(M.argmax(), M.shape)
+    return {
+        "home": home, "away": away, "neutral": neutral,
+        "exp_goals_home": round(float(lam_h.mean()), 2),
+        "exp_goals_away": round(float(lam_a.mean()), 2),
+        "most_likely_score": f"{hx}-{ax}",
+        "p_home_win": round(float(np.tril(M, -1).sum()), 3),
+        "p_draw": round(float(np.trace(M)), 3),
+        "p_away_win": round(float(np.triu(M, 1).sum()), 3),
+        "p_over_2_5": round(float(sum(M[x, y] for x in g for y in g if x + y >= 3)), 3),
+        "p_btts": round(float(sum(M[x, y] for x in g[1:] for y in g[1:])), 3),
+        "score_matrix": M,
+    }
+
+
 def posterior_strength_table(fit_result: FitResult) -> pd.DataFrame:
     """Posterior mean attack/defence per team, sorted by net strength."""
     post = fit_result.idata.posterior

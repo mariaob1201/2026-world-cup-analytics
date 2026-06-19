@@ -49,11 +49,21 @@ def main() -> None:
     srow = strength[strength["team"] == TEAM].iloc[0]
     rank = int(srow["rank"])
 
+    # Elo view (stage 10), if available — for the two-model contrast.
+    elo_rank = elo_val = None
+    elo_path = PROCESSED / "elo_ratings.csv"
+    if elo_path.exists():
+        erow = pd.read_csv(elo_path)
+        er = erow[erow["team"] == TEAM]
+        if len(er):
+            elo_rank, elo_val = int(er["rank"].iloc[0]), float(er["elo"].iloc[0])
+
     profile = interpret_team(TEAM, squad)
     tactics = interpret_formation(squad, actual=MEXICO["preferred_formation"])
     fit = formation_fit(squad)
 
-    md = _render(rank, len(strength), srow, profile, tactics, fit, squad)
+    md = _render(rank, len(strength), srow, profile, tactics, fit, squad,
+                 elo_rank, elo_val)
     out = PROCESSED / "mexico_assessment.md"
     out.write_text(md)
 
@@ -72,7 +82,8 @@ def main() -> None:
     print(f"\nFull report -> {out}")
 
 
-def _render(rank, n, srow, profile, tactics, fit, squad) -> str:
+def _render(rank, n, srow, profile, tactics, fit, squad,
+            elo_rank=None, elo_val=None) -> str:
     L = []
     L.append("# Mexico — World Cup 2026 Assessment\n")
     L.append("_Combines a Bayesian strength model fit on real international "
@@ -81,9 +92,15 @@ def _render(rank, n, srow, profile, tactics, fit, squad) -> str:
 
     # 1. Headline
     L.append("## Bottom line\n")
-    L.append(f"- **Model strength**: **{_ordinal(rank)} of {n}** "
+    L.append(f"- **Bayesian strength**: **{_ordinal(rank)} of {n}** "
              f"(attack {srow['attack']:+.2f}, defence {srow['defence']:+.2f}) — "
-             "a mid-table side over the 2022–26 cycle.")
+             "mid-table over the pooled 2022–26 window.")
+    if elo_rank is not None:
+        L.append(f"- **Elo (recency-weighted)**: **{_ordinal(elo_rank)} of {n}** "
+                 f"(Elo {elo_val:.0f}) — much higher, because Elo rewards Mexico's "
+                 "current hot streak and high-stakes World Cup wins. The two views "
+                 "disagreeing *is* the signal: pooled strength says solid, momentum "
+                 "says surging.")
     L.append(f"- **Current form, though, is hot**: {MEXICO['tournament_status']}")
     L.append("- **Read**: the model's longer-window rating *understates* Mexico's "
              "present level; recent results (two World Cup clean sheets, a 5-1 over "

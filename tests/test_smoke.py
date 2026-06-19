@@ -124,6 +124,51 @@ def test_x_collector_pure_helpers():
     assert xc.summarize_for_scouting([])["n"] == 0
 
 
+def test_team_structure_real_draw():
+    from wc2026.data.teams import by_group
+    # Spot-check the real 2026 draw made it in.
+    groups = by_group()
+    names = {t.name for g in groups.values() for t in g}
+    assert {"Mexico", "Czechia", "Senegal", "Curaçao", "Congo DR"} <= names
+    a = {t.name for t in groups["A"]}
+    assert a == {"Mexico", "South Africa", "South Korea", "Czechia"}
+
+
+def test_elo():
+    import pandas as pd
+
+    from wc2026.models.elo import _g_multiplier, _k_for, run_elo, win_probability
+
+    assert _k_for("FIFA World Cup") > _k_for("Friendly")
+    assert _g_multiplier(5) > _g_multiplier(1) == 1.0
+    assert 0.5 < win_probability(1700, 1500) < 1.0      # stronger team favoured
+    assert abs(win_probability(1500, 1500) - 0.5) < 1e-9
+
+    matches = pd.DataFrame({
+        "date": ["2024-01-01", "2024-06-01"],
+        "home_team": ["Mexico", "Brazil"], "away_team": ["Brazil", "Mexico"],
+        "home_goals": [1, 3], "away_goals": [0, 0],
+        "tournament": ["Friendly", "FIFA World Cup"], "neutral": [True, True],
+    })
+    elo = run_elo(matches)
+    assert len(elo) == 48 and {"team", "elo", "rank"} <= set(elo.columns)
+
+
+def test_llm_judge_fallback():
+    """Judge falls back to Elo (no SDK/key) and returns coherent 1X2 probs."""
+    from wc2026.models.llm_judge import Fixture, TeamContext, elo_fallback
+
+    fx = Fixture(
+        a=TeamContext("Mexico", elo=1604, elo_rank=7),
+        b=TeamContext("Senegal", elo=1483, elo_rank=20),
+        stage="Round of 32", venue="Estadio Azteca (Mexico home)",
+    )
+    v = elo_fallback(fx)
+    total = v["p_a_win"] + v["p_draw"] + v["p_b_win"]
+    assert abs(total - 1.0) < 0.05
+    assert v["p_a_win"] > v["p_b_win"]   # higher Elo + home favoured
+
+
 def test_model_fits_tiny():
     """A minimal NUTS run just to prove the model compiles and samples."""
     import pymc as pm  # imported here so non-model tests don't pay the cost
