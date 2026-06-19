@@ -53,6 +53,10 @@ champion:
 live-squads:
 	$(PY) scripts/17_live_squads.py
 
+# Backtest the model vs Elo + naive baselines across 2018/2022/2026 (the scoreboard).
+evaluate:
+	$(PY) scripts/19_evaluate.py
+
 # Backtest + forecast, then tracking charts/sentiment/tactics. Re-run each matchday.
 track:
 	$(PY) scripts/13_match_predictions.py

@@ -260,6 +260,23 @@ def test_llm_extract_fallback():
     assert abs(momentum_from_features(f)) <= 0.10
 
 
+def test_metrics():
+    """Proper scoring rules behave: confident-correct beats confident-wrong."""
+    from wc2026.models.metrics import evaluate, log_loss, predicted_result, rps
+
+    # RPS: a confident correct call scores better (lower) than a confident wrong one.
+    assert rps(0.8, 0.1, 0.1, "H") < rps(0.8, 0.1, 0.1, "A")
+    # RPS is ordinal: predicting Home when it was Draw beats predicting Home when Away.
+    assert rps(0.8, 0.1, 0.1, "D") < rps(0.8, 0.1, 0.1, "A")
+    assert log_loss(0.9, 0.05, 0.05, "H") < log_loss(0.2, 0.4, 0.4, "H")
+    assert predicted_result(0.2, 0.3, 0.5) == "A"
+
+    rows = [{"p_H": 0.6, "p_D": 0.25, "p_A": 0.15, "result": "H",
+             "pred_total": 2.1, "actual_total": 3}]
+    m = evaluate(rows)
+    assert m["n"] == 1 and 0 <= m["RPS"] <= 1 and m["goals_MAE"] == 0.9
+
+
 def test_model_fits_tiny():
     """A minimal NUTS run just to prove the model compiles and samples."""
     import pymc as pm  # imported here so non-model tests don't pay the cost
