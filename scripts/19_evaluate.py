@@ -18,7 +18,7 @@ import pymc as pm
 
 from wc2026.config import ROOT, ensure_dirs
 from wc2026.data.sources import download_intl_results
-from wc2026.models.bayesian_score import build_model, predict_match
+from wc2026.models.bayesian_score import build_model, predict_match, recency_weights
 from wc2026.models.elo import BASE_RATING, HFA, _g_multiplier, _k_for, win_probability
 from wc2026.models.metrics import evaluate
 
@@ -63,11 +63,19 @@ def run_year(df: pd.DataFrame, year: int, start: str, end: str):
     elo = generic_elo(train)   # uses home_score/away_score — before the rename
     train_model = train.rename(columns={"home_score": "home_goals",
                                         "away_score": "away_goals"})
-    with build_model(train_model, teams, prior_strength=np.zeros(len(teams))):
-        idata = pm.sample(draws=800, tune=800, chains=2, cores=1,
-                          target_accept=0.9, progressbar=False, random_seed=7)
+    zeros = np.zeros(len(teams))
 
-    model_rows, elo_rows, naive_rows = [], [], []
+    def _fit(weights):
+        with build_model(train_model, teams, prior_strength=zeros, weights=weights):
+            return pm.sample(draws=800, tune=800, chains=2, cores=1,
+                             target_accept=0.9, progressbar=False, random_seed=7)
+
+    idata = _fit(None)
+    # Recency-weighted variant: down-weight stale matches (18-month half-life).
+    w = recency_weights(train_model["date"], cutoff, half_life_days=540)
+    idata_rec = _fit(w)
+
+    model_rows, rec_rows, elo_rows, naive_rows = [], [], [], []
     for m in wc.itertuples():
         h, a = m.home_team, m.away_team
         neutral = bool(getattr(m, "neutral", True))
@@ -75,8 +83,9 @@ def run_year(df: pd.DataFrame, year: int, start: str, end: str):
         result = "H" if gh > ga else "A" if ga > gh else "D"
         actual_total = gh + ga
 
-        p = predict_match(idata, teams, h, a, neutral=neutral)
-        model_rows.append({"p_H": p["p_home_win"], "p_D": p["p_draw"],
+        for src, bucket in ((idata, model_rows), (idata_rec, rec_rows)):
+            p = predict_match(src, teams, h, a, neutral=neutral)
+            bucket.append({"p_H": p["p_home_win"], "p_D": p["p_draw"],
                            "p_A": p["p_away_win"], "result": result,
                            "pred_total": p["exp_goals_home"] + p["exp_goals_away"],
                            "actual_total": actual_total})
@@ -86,7 +95,11 @@ def run_year(df: pd.DataFrame, year: int, start: str, end: str):
                            "result": result})
 
     return {"year": year, "Bayesian": evaluate(model_rows),
+            "Bayesian+recency": evaluate(rec_rows),
             "Elo": evaluate(elo_rows), "Naive": evaluate(naive_rows)}
+
+
+MODELS = ("Bayesian", "Bayesian+recency", "Elo", "Naive")
 
 
 def main() -> None:
@@ -107,11 +120,11 @@ def main() -> None:
 def _console(results) -> str:
     lines = []
     for r in results:
-        lines.append(f"[{r['year']}] n={r['Bayesian']['n']}  "
-                     f"RPS  Bayes {r['Bayesian']['RPS']} | Elo {r['Elo']['RPS']} | "
-                     f"Naive {r['Naive']['RPS']}   "
-                     f"(hit {r['Bayesian']['hit_rate']}/{r['Elo']['hit_rate']}/"
-                     f"{r['Naive']['hit_rate']})")
+        d = r["Bayesian+recency"]["RPS"] - r["Bayesian"]["RPS"]
+        lines.append(f"[{r['year']}] n={r['Bayesian']['n']}  RPS  "
+                     f"Bayes {r['Bayesian']['RPS']} | +recency "
+                     f"{r['Bayesian+recency']['RPS']} ({d:+.4f}) | "
+                     f"Elo {r['Elo']['RPS']} | Naive {r['Naive']['RPS']}")
     return "\n".join(lines)
 
 
@@ -128,7 +141,7 @@ def _render(results) -> str:
         L.append(f"## {r['year']} World Cup  (n={r['Bayesian']['n']} matches)\n")
         L.append("| Model | RPS ↓ | log-loss ↓ | Brier ↓ | hit-rate ↑ | goals MAE ↓ |")
         L.append("|---|---|---|---|---|---|")
-        for name in ("Bayesian", "Elo", "Naive"):
+        for name in MODELS:
             m = r[name]
             L.append(f"| {name} | {m['RPS']} | {m['log_loss']} | {m['Brier']} | "
                      f"{m['hit_rate']} | {m.get('goals_MAE', '—')} |")

@@ -9,6 +9,7 @@ _Bayesian goals model (no player prior) fit on the 4 years before each tournamen
 | Model | RPS ↓ | log-loss ↓ | Brier ↓ | hit-rate ↑ | goals MAE ↓ |
 |---|---|---|---|---|---|
 | Bayesian | 0.2132 | 1.0027 | 0.5994 | 0.594 | 1.175 |
+| Bayesian+recency | 0.2111 | 0.9993 | 0.5975 | 0.547 | 1.182 |
 | Elo | 0.2153 | 1.0027 | 0.5991 | 0.531 | — |
 | Naive | 0.2494 | 1.095 | 0.6651 | 0.391 | — |
 
@@ -17,6 +18,7 @@ _Bayesian goals model (no player prior) fit on the 4 years before each tournamen
 | Model | RPS ↓ | log-loss ↓ | Brier ↓ | hit-rate ↑ | goals MAE ↓ |
 |---|---|---|---|---|---|
 | Bayesian | 0.2161 | 1.0326 | 0.6168 | 0.5 | 1.488 |
+| Bayesian+recency | 0.2153 | 1.0329 | 0.615 | 0.516 | 1.505 |
 | Elo | 0.2174 | 1.0269 | 0.6154 | 0.438 | — |
 | Naive | 0.2345 | 1.0739 | 0.6497 | 0.438 | — |
 
@@ -25,6 +27,7 @@ _Bayesian goals model (no player prior) fit on the 4 years before each tournamen
 | Model | RPS ↓ | log-loss ↓ | Brier ↓ | hit-rate ↑ | goals MAE ↓ |
 |---|---|---|---|---|---|
 | Bayesian | 0.1795 | 0.9881 | 0.5951 | 0.5 | 1.515 |
+| Bayesian+recency | 0.1799 | 0.9906 | 0.598 | 0.464 | 1.532 |
 | Elo | 0.2008 | 1.0728 | 0.6507 | 0.464 | — |
 | Naive | 0.1908 | 1.0318 | 0.6188 | 0.536 | — |
 

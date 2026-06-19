@@ -56,12 +56,30 @@ class FitResult:
     team_to_idx: dict[str, int]
 
 
+def recency_weights(dates, asof, half_life_days: float = 540.0) -> np.ndarray:
+    """Exponential time-decay weights (mean-normalized to 1).
+
+    Recent matches count more; mean-normalizing keeps the *total* likelihood
+    mass the same, so this re-weights toward current form rather than just
+    shrinking everything. half_life_days=540 ≈ 18 months.
+    """
+    age = (pd.Timestamp(asof) - pd.to_datetime(pd.Series(list(dates)))).dt.days
+    age = age.clip(lower=0).to_numpy()
+    w = 0.5 ** (age / half_life_days)
+    return w * (len(w) / w.sum())
+
+
 def build_model(
     matches: pd.DataFrame,
     teams: list[str],
     prior_strength: np.ndarray | None = None,
+    weights: np.ndarray | None = None,
 ) -> pm.Model:
-    """Construct the PyMC model. ``matches`` needs home/away team + goals."""
+    """Construct the PyMC model. ``matches`` needs home/away team + goals.
+
+    If ``weights`` (one per match) is given, the Poisson likelihood is
+    weighted — used for recency weighting (down-weight stale matches).
+    """
     team_to_idx = {t: i for i, t in enumerate(teams)}
     n_teams = len(teams)
 
@@ -106,10 +124,19 @@ def build_model(
         log_lambda_home = intercept + home_adv + att_eff[h_idx] - deff[a_idx]
         log_lambda_away = intercept + att_eff[a_idx] - deff[h_idx]
 
-        pm.Poisson("home_goals", mu=pm.math.exp(log_lambda_home),
-                   observed=hg, dims="match")
-        pm.Poisson("away_goals", mu=pm.math.exp(log_lambda_away),
-                   observed=ag, dims="match")
+        if weights is None:
+            pm.Poisson("home_goals", mu=pm.math.exp(log_lambda_home),
+                       observed=hg, dims="match")
+            pm.Poisson("away_goals", mu=pm.math.exp(log_lambda_away),
+                       observed=ag, dims="match")
+        else:
+            # Weighted likelihood: scale each match's log-prob by its recency
+            # weight (via Potential, since pm.Poisson takes no per-obs weights).
+            w = pm.Data("obs_weights", np.asarray(weights, float), dims="match")
+            lp_h = pm.logp(pm.Poisson.dist(mu=pm.math.exp(log_lambda_home)), hg)
+            lp_a = pm.logp(pm.Poisson.dist(mu=pm.math.exp(log_lambda_away)), ag)
+            pm.Potential("home_goals_w", pm.math.sum(w * lp_h))
+            pm.Potential("away_goals_w", pm.math.sum(w * lp_a))
 
     return model
 
@@ -122,9 +149,10 @@ def fit(
     tune: int = 1000,
     chains: int = 4,
     target_accept: float = 0.9,
+    weights: np.ndarray | None = None,
 ) -> FitResult:
     """Sample the posterior with NUTS and return inference data."""
-    model = build_model(matches, teams, prior_strength)
+    model = build_model(matches, teams, prior_strength, weights=weights)
     with model:
         idata = pm.sample(
             draws=draws,

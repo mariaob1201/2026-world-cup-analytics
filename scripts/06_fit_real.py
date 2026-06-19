@@ -29,8 +29,13 @@ def main() -> None:
     prior = (team_feat.set_index("team")["prior_strength"]
              .reindex(teams).fillna(0.0).to_numpy())
 
-    print("Sampling posterior on real data (NUTS)...")
-    result = fit(matches, teams, prior_strength=prior, draws=1000, tune=1000, chains=4)
+    # Recency weighting: recent matches (incl. tournament games) count more.
+    from wc2026.models.bayesian_score import recency_weights
+    weights = recency_weights(matches["date"], "2026-06-19", half_life_days=540)
+
+    print("Sampling posterior on real data (NUTS, recency-weighted)...")
+    result = fit(matches, teams, prior_strength=prior, draws=1000, tune=1000,
+                 chains=4, weights=weights)
     result.idata.to_netcdf(ARTIFACTS / "posterior_real.nc")
 
     summary = az.summary(result.idata,

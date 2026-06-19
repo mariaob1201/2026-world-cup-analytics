@@ -260,6 +260,18 @@ def test_llm_extract_fallback():
     assert abs(momentum_from_features(f)) <= 0.10
 
 
+def test_recency_weights():
+    """Recent matches weigh more; weights mean-normalize to 1."""
+    import numpy as np
+
+    from wc2026.models.bayesian_score import recency_weights
+
+    dates = ["2022-01-01", "2024-01-01", "2026-06-01"]
+    w = recency_weights(dates, asof="2026-06-19", half_life_days=540)
+    assert w[2] > w[1] > w[0]            # newest heaviest
+    assert abs(w.mean() - 1.0) < 1e-9    # mean-normalized
+
+
 def test_metrics():
     """Proper scoring rules behave: confident-correct beats confident-wrong."""
     from wc2026.models.metrics import evaluate, log_loss, predicted_result, rps
