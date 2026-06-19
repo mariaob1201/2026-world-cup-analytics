@@ -99,6 +99,54 @@ def fetch_squads(force: bool = False) -> pd.DataFrame:
     return parse_squads(wikitext)
 
 
+def live_team_features(live: pd.DataFrame, fifa: pd.DataFrame) -> pd.DataFrame:
+    """Per-team prior built from the REAL roster + best-effort skill join.
+
+    Roster, position, age (seniority) and caps (longevity) are REAL (Wikipedia).
+    Skill `overall` is joined from a ratings table by last name where it matches;
+    unmatched players (newcomers) fall back to their team's median. This makes the
+    model prior reflect who is actually selected, not a vintage snapshot.
+
+    Returns columns: team, squad_overall, avg_caps, avg_age, prior_strength.
+    """
+    import numpy as np
+
+    def last(n):
+        return str(n).split()[-1].lower()
+
+    rt = fifa[["short_name", "overall"]].copy()
+    rt["_last"] = rt["short_name"].map(last)
+    rt = rt.sort_values("overall", ascending=False).drop_duplicates("_last")
+    m = live.copy()
+    m["_last"] = m["name"].map(last)
+    m = m.merge(rt[["_last", "overall"]], on="_last", how="left")
+
+    # Fill missing overall with the team's median of matched players (else global).
+    gmed = m["overall"].median()
+    m["overall"] = m.groupby("team")["overall"].transform(
+        lambda s: s.fillna(s.median())).fillna(gmed)
+
+    def z(s):
+        sd = s.std(ddof=0)
+        return (s - s.mean()) / sd if sd else s * 0.0
+
+    rows = []
+    for team, g in m.groupby("team"):
+        core = g.nlargest(16, "overall")
+        rows.append({"team": team,
+                     "squad_overall": round(core["overall"].mean(), 1),
+                     "avg_caps": round(g["caps"].mean(), 1),
+                     "avg_age": round(g["age"].mean(), 1)})
+    tf = pd.DataFrame(rows)
+    # Skill dominates: caps/age are experience, not quality, so they only nudge
+    # (a heavy caps weight wrongly lifts veteran-but-modest squads like Panama).
+    composite = (0.88 * z(tf["squad_overall"])
+                 + 0.07 * z(np.log1p(tf["avg_caps"]))
+                 + 0.05 * z(tf["avg_age"]))
+    tf["prior_strength"] = (z(composite) * 0.5).round(4)
+    return tf.sort_values("prior_strength", ascending=False).reset_index(drop=True)
+
+
 def merge_skills(squads: pd.DataFrame, ratings: pd.DataFrame,
                  name_col: str = "short_name") -> pd.DataFrame:
     """Attach skill ratings to the real roster by fuzzy last-name match.

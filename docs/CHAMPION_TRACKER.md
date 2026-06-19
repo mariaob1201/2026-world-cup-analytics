@@ -15,45 +15,45 @@ Both come from one model: goals are the primitive; the winner is a simulation ov
 
 | Team | Quarter | Semi | Final | **Champion** |
 |---|---|---|---|---|
-| Argentina | 49% | 28% | 18% | **13%** |
-| France | 46% | 24% | 14% | **10%** |
-| Portugal | 42% | 23% | 13% | **8%** |
-| Brazil | 42% | 22% | 11% | **7%** |
-| Belgium | 42% | 21% | 11% | **6%** |
-| Colombia | 42% | 22% | 11% | **6%** |
-| Germany | 42% | 23% | 11% | **6%** |
-| England | 36% | 18% | 9% | **5%** |
-| Spain | 34% | 18% | 8% | **4%** |
-| Austria | 34% | 19% | 10% | **4%** |
-| Uruguay | 28% | 15% | 7% | **4%** |
-| Switzerland | 29% | 15% | 7% | **3%** |
+| Argentina | 48% | 28% | 17% | **12%** |
+| France | 47% | 26% | 15% | **10%** |
+| Colombia | 45% | 23% | 12% | **7%** |
+| Portugal | 39% | 20% | 11% | **7%** |
+| Brazil | 43% | 22% | 11% | **7%** |
+| Germany | 38% | 20% | 10% | **5%** |
+| Spain | 33% | 17% | 9% | **5%** |
+| Austria | 36% | 19% | 9% | **5%** |
+| England | 36% | 18% | 9% | **4%** |
+| Belgium | 35% | 18% | 9% | **4%** |
+| Uruguay | 27% | 15% | 8% | **4%** |
+| Japan | 28% | 14% | 7% | **3%** |
 
 ## Next games — predicted goals
 
 | Date | Fixture | Pred goals (xG) | Likely | P(H/D/A) | Home form |
 |---|---|---|---|---|---|
-| 2026-06-20 | Netherlands v Sweden | 2.0-1.3 | 1-1 | 54%/22%/25% | steady |
-| 2026-06-20 | Tunisia v Japan | 0.6-1.2 | 0-1 | 19%/30%/50% | cold |
-| 2026-06-20 | Germany v Ivory Coast | 1.9-1.3 | 1-1 | 50%/23%/27% | red-hot |
-| 2026-06-20 | Ecuador v Curaçao | 1.9-0.4 | 1-0 | 72%/20%/7% | steady |
-| 2026-06-21 | Belgium v Iran | 2.3-0.8 | 2-0 | 71%/18%/12% | red-hot |
-| 2026-06-21 | New Zealand v Egypt | 0.7-1.2 | 0-1 | 21%/31%/48% | cold |
-| 2026-06-21 | Spain v Saudi Arabia | 1.6-0.6 | 1-0 | 61%/25%/14% | steady |
-| 2026-06-21 | Uruguay v Cape Verde | 1.4-0.5 | 1-0 | 58%/28%/14% | steady |
-| 2026-06-22 | France v Iraq | 2.2-0.5 | 2-0 | 76%/17%/7% | rising |
-| 2026-06-22 | Norway v Senegal | 1.4-1.2 | 1-1 | 40%/26%/33% | rising |
-| 2026-06-22 | Argentina v Austria | 1.8-1.1 | 1-1 | 53%/23%/24% | red-hot |
-| 2026-06-22 | Jordan v Algeria | 0.6-1.9 | 0-1 | 12%/21%/67% | dipping |
-| 2026-06-23 | Portugal v Uzbekistan | 2.0-0.4 | 1-0 | 74%/19%/8% | rising |
-| 2026-06-23 | Colombia v Congo DR | 1.6-0.7 | 1-0 | 59%/25%/16% | rising |
-| 2026-06-23 | England v Ghana | 2.2-0.8 | 2-0 | 69%/19%/12% | rising |
-| 2026-06-23 | Panama v Croatia | 0.5-1.6 | 0-1 | 12%/24%/64% | dipping |
-| 2026-06-24 | Morocco v Haiti | 1.7-0.5 | 1-0 | 66%/23%/11% | rising |
-| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.6-1.3 | 1-1 | 46%/24%/30% | dipping |
-| 2026-06-24 | Scotland v Brazil | 1.1-2.2 | 1-2 | 18%/20%/63% | rising |
-| 2026-06-24 | South Africa v South Korea | 0.9-1.1 | 0-1 | 30%/31%/39% | dipping |
-| 2026-06-24 | Mexico v Czechia | 2.0-1.1 | 1-1 | 57%/22%/22% | rising |
-| 2026-06-24 | Canada v Switzerland | 1.4-1.4 | 1-1 | 39%/25%/36% | red-hot |
+| 2026-06-20 | Netherlands v Sweden | 2.1-1.3 | 1-1 | 55%/21%/24% | steady |
+| 2026-06-20 | Tunisia v Japan | 0.7-1.4 | 0-1 | 19%/28%/53% | cold |
+| 2026-06-20 | Germany v Ivory Coast | 1.6-1.3 | 1-1 | 46%/24%/30% | red-hot |
+| 2026-06-20 | Ecuador v Curaçao | 1.9-0.5 | 1-0 | 70%/21%/9% | steady |
+| 2026-06-21 | Belgium v Iran | 1.9-0.8 | 1-0 | 64%/21%/15% | red-hot |
+| 2026-06-21 | New Zealand v Egypt | 0.7-1.3 | 0-1 | 19%/29%/52% | cold |
+| 2026-06-21 | Spain v Saudi Arabia | 1.4-0.5 | 1-0 | 62%/27%/12% | steady |
+| 2026-06-21 | Uruguay v Cape Verde | 1.3-0.7 | 1-0 | 51%/29%/20% | steady |
+| 2026-06-22 | France v Iraq | 2.1-0.4 | 1-0 | 76%/18%/6% | rising |
+| 2026-06-22 | Norway v Senegal | 1.3-1.3 | 1-1 | 39%/26%/35% | rising |
+| 2026-06-22 | Argentina v Austria | 1.7-1.1 | 1-1 | 50%/24%/26% | red-hot |
+| 2026-06-22 | Jordan v Algeria | 0.8-1.9 | 0-1 | 15%/21%/64% | dipping |
+| 2026-06-23 | Portugal v Uzbekistan | 1.9-0.5 | 1-0 | 70%/20%/10% | rising |
+| 2026-06-23 | Colombia v Congo DR | 1.7-0.7 | 1-0 | 60%/24%/16% | rising |
+| 2026-06-23 | England v Ghana | 2.1-0.7 | 1-0 | 68%/20%/12% | rising |
+| 2026-06-23 | Panama v Croatia | 0.7-1.6 | 0-1 | 17%/25%/58% | dipping |
+| 2026-06-24 | Morocco v Haiti | 1.7-0.7 | 1-0 | 60%/24%/16% | rising |
+| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.5-1.1 | 1-1 | 46%/26%/29% | dipping |
+| 2026-06-24 | Scotland v Brazil | 1.0-2.2 | 0-2 | 17%/20%/64% | rising |
+| 2026-06-24 | South Africa v South Korea | 1.1-0.9 | 1-0 | 39%/31%/31% | dipping |
+| 2026-06-24 | Mexico v Czechia | 1.8-0.9 | 1-0 | 57%/23%/19% | rising |
+| 2026-06-24 | Canada v Switzerland | 1.5-1.3 | 1-1 | 42%/25%/33% | red-hot |
 
 ## Current group standings (played)
 

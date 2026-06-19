@@ -20,7 +20,11 @@ def main() -> None:
     print(f"Real international matches (2022-01-01 .. 2026-06-19, our 48 teams): "
           f"{len(matches)}")
 
-    team_feat = pd.read_csv(PROCESSED / "team_features_real.csv")
+    # Prefer the live-roster prior (real 2026 call-ups) when it's been built.
+    live_path = PROCESSED / "team_features_live.csv"
+    prior_path = live_path if live_path.exists() else PROCESSED / "team_features_real.csv"
+    print(f"Prior source: {prior_path.name}")
+    team_feat = pd.read_csv(prior_path)
     teams = [t.name for t in TEAMS]
     prior = (team_feat.set_index("team")["prior_strength"]
              .reindex(teams).fillna(0.0).to_numpy())
