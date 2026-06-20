@@ -54,6 +54,10 @@ champion:
 live-squads:
 	$(PY) scripts/17_live_squads.py
 
+# Build the model prior from the real current squads (real names/caps/age).
+live-features:
+	$(PY) scripts/18_live_features.py
+
 # Backtest the model vs Elo + naive baselines across 2018/2022/2026 (the scoreboard).
 evaluate:
 	$(PY) scripts/19_evaluate.py
