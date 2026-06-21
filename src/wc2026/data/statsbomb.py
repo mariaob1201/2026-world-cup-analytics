@@ -27,8 +27,17 @@ def _get(url: str):
         return json.loads(r.read().decode("utf-8"))
 
 
+# Shot outcomes that count as "on target".
+_ON_TARGET = {"Goal", "Saved", "Saved to Post"}
+
+
 def fetch_world_cup_xg(year: int) -> pd.DataFrame:
-    """Per-match team xG + goals for a World Cup year (2018 or 2022)."""
+    """Per-match team stats for a World Cup year (2018 or 2022).
+
+    Columns per side: goals, **xg, shots, sot** (shots on target), and **poss**
+    (possession proxy = share of passes). These are the high-signal dynamics the
+    performance-form conditioner uses (try metric=xg | shots | sot | poss).
+    """
     season = WORLD_CUPS[year]
     matches = _get(f"{BASE}/matches/43/{season}.json")
     rows = []
@@ -36,17 +45,29 @@ def fetch_world_cup_xg(year: int) -> pd.DataFrame:
         home = m["home_team"]["home_team_name"]
         away = m["away_team"]["away_team_name"]
         events = _get(f"{BASE}/events/{m['match_id']}.json")
-        hxg = axg = 0.0
+        acc = {home: dict(xg=0.0, shots=0, sot=0, passes=0),
+               away: dict(xg=0.0, shots=0, sot=0, passes=0)}
         for e in events:
-            if e.get("type", {}).get("name") == "Shot":
-                xg = e.get("shot", {}).get("statsbomb_xg", 0.0) or 0.0
-                if e.get("team", {}).get("name") == home:
-                    hxg += xg
-                elif e.get("team", {}).get("name") == away:
-                    axg += xg
+            t = e.get("team", {}).get("name")
+            if t not in acc:
+                continue
+            typ = e.get("type", {}).get("name")
+            if typ == "Shot":
+                shot = e.get("shot", {})
+                acc[t]["xg"] += shot.get("statsbomb_xg", 0.0) or 0.0
+                acc[t]["shots"] += 1
+                if shot.get("outcome", {}).get("name") in _ON_TARGET:
+                    acc[t]["sot"] += 1
+            elif typ == "Pass":
+                acc[t]["passes"] += 1
+        tot_pass = acc[home]["passes"] + acc[away]["passes"] or 1
         rows.append({
             "date": m["match_date"], "home_team": home, "away_team": away,
             "home_goals": int(m["home_score"]), "away_goals": int(m["away_score"]),
-            "home_xg": round(hxg, 3), "away_xg": round(axg, 3),
+            "home_xg": round(acc[home]["xg"], 3), "away_xg": round(acc[away]["xg"], 3),
+            "home_shots": acc[home]["shots"], "away_shots": acc[away]["shots"],
+            "home_sot": acc[home]["sot"], "away_sot": acc[away]["sot"],
+            "home_poss": round(acc[home]["passes"] / tot_pass, 3),
+            "away_poss": round(acc[away]["passes"] / tot_pass, 3),
         })
     return pd.DataFrame(rows).sort_values("date").reset_index(drop=True)
