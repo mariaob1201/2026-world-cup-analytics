@@ -1,6 +1,6 @@
 # WC 2026 — Tracking Analytics, Sentiment & Tactics
 
-_Run after each matchday to track model calibration and read the next slate. Charts in `artifacts/`. Compiled 2026-06-21._
+_Run after each matchday to track model calibration and read the next slate. Charts in `artifacts/`. Compiled 2026-06-22._
 
 ## Tracking charts
 
@@ -18,10 +18,6 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 
 | Fixture | Home form | Away form | Momentum edge |
 |---|---|---|---|
-| France v Iraq | rising (+0.09) | dipping (-0.12) | **France** |
-| Norway v Senegal | rising (+0.10) | dipping (-0.07) | **Norway** |
-| Argentina v Austria | red-hot (+0.18) | red-hot (+0.17) | **even** |
-| Jordan v Algeria | dipping (-0.11) | steady (-0.01) | **Algeria** |
 | Portugal v Uzbekistan | rising (+0.06) | dipping (-0.09) | **Portugal** |
 | Colombia v Congo DR | rising (+0.09) | steady (-0.02) | **Colombia** |
 | England v Ghana | rising (+0.06) | dipping (-0.11) | **England** |
@@ -34,22 +30,6 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 | Canada v Switzerland | red-hot (+0.16) | red-hot (+0.12) | **even** |
 
 ## Tactical read (next fixtures)
-
-**France v Iraq** — best shapes 3-4-3 vs 3-5-2.
-  - Defence: home edge (84 vs 58) · Midfield: home edge (87 vs 67) · Attack: home edge (88 vs 60)
-  - home controls midfield; home built around its attack, away around its midfield.
-
-**Norway v Senegal** — best shapes 3-5-2 vs 4-3-3.
-  - Defence: away edge (75 vs 80) · Midfield: even (78 vs 78) · Attack: away edge (80 vs 81)
-  - midfield finely balanced; home built around its attack, away around its attack.
-
-**Argentina v Austria** — best shapes 4-3-3 vs 4-2-3-1.
-  - Defence: home edge (82 vs 80) · Midfield: home edge (82 vs 81) · Attack: home edge (89 vs 77)
-  - home controls midfield; home built around its attack, away around its midfield.
-
-**Jordan v Algeria** — best shapes 3-5-2 vs 4-4-2.
-  - Defence: away edge (60 vs 78) · Midfield: away edge (64 vs 78) · Attack: away edge (57 vs 81)
-  - away controls midfield; home built around its midfield, away around its attack.
 
 **Portugal v Uzbekistan** — best shapes 4-3-3 vs 3-4-3.
   - Defence: home edge (85 vs 62) · Midfield: home edge (84 vs 67) · Attack: home edge (86 vs 68)

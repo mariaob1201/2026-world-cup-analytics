@@ -240,6 +240,17 @@ def test_simulation_conditions_on_results():
     assert pa >= pb   # the fixed winner advances at least as often
 
 
+def test_age_role_weights():
+    """Pace weight falls with age; experience weight rises — the age×role idea."""
+    from wc2026.data.live_squads import _experience_weight, _youth_pace_weight
+
+    assert _youth_pace_weight(20) > _youth_pace_weight(30) > _youth_pace_weight(35)
+    assert _experience_weight(33) > _experience_weight(28) > _experience_weight(22)
+    # bounded
+    assert 0.75 <= _youth_pace_weight(40) <= 1.20
+    assert 0.80 <= _experience_weight(40) <= 1.25
+
+
 def test_live_squads_parser():
     """Wikitext squad parser is pure and offline-testable."""
     from wc2026.data.live_squads import parse_squads

@@ -1,6 +1,6 @@
 # 📒 Forecast Log — Predictions vs Ground Truth
 
-_A growing, append-on-result ledger: every goal forecast and how it turned out. Updated by the daily GitHub Action. Compiled 2026-06-21._
+_A growing, append-on-result ledger: every goal forecast and how it turned out. Updated by the daily GitHub Action. Compiled 2026-06-22._
 
 ## Running accuracy (resolved matches)
 
@@ -54,10 +54,6 @@ _A growing, append-on-result ledger: every goal forecast and how it turned out. 
 
 | Date | Fixture | Forecast (xG) | Likely | P(H/D/A) |
 |---|---|---|---|---|
-| 2026-06-22 | France v Iraq | 2.0-0.5 | 1-0 | 73%/19%/8% |
-| 2026-06-22 | Norway v Senegal | 1.3-1.2 | 1-1 | 39%/27%/34% |
-| 2026-06-22 | Argentina v Austria | 1.8-1.1 | 1-1 | 52%/23%/25% |
-| 2026-06-22 | Jordan v Algeria | 0.6-1.9 | 0-1 | 11%/21%/67% |
 | 2026-06-23 | Portugal v Uzbekistan | 1.9-0.4 | 1-0 | 72%/20%/8% |
 | 2026-06-23 | Colombia v Congo DR | 1.7-0.7 | 1-0 | 61%/24%/15% |
 | 2026-06-23 | England v Ghana | 2.2-0.8 | 2-0 | 70%/18%/12% |

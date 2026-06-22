@@ -1,6 +1,6 @@
 # WC 2026 — Match Predictions vs Reality, and Forecasts
 
-_Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad prior). Backtest compares those out-of-sample forecasts to the actual scorelines; forecasts cover the next slate. Compiled 2026-06-21._
+_Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad prior). Backtest compares those out-of-sample forecasts to the actual scorelines; forecasts cover the next slate. Compiled 2026-06-22._
 
 ## Accuracy so far (out-of-sample)
 
@@ -58,10 +58,6 @@ _`Mom` = recency-weighted form (+ scouted sentiment) applied as a small, capped 
 
 | Date | Fixture | Pred xG | Likely | P(H/D/A) | Over 2.5 | Mom H/A |
 |---|---|---|---|---|---|---|
-| 2026-06-22 | France v Iraq | 2.0-0.5 | 1-0 | 73%/19%/8% | 44% | +0.09/-0.12 |
-| 2026-06-22 | Norway v Senegal | 1.3-1.2 | 1-1 | 39%/27%/34% | 45% | +0.10/-0.07 |
-| 2026-06-22 | Argentina v Austria | 1.8-1.1 | 1-1 | 52%/23%/25% | 54% | +0.18/+0.17 |
-| 2026-06-22 | Jordan v Algeria | 0.6-1.9 | 0-1 | 11%/21%/67% | 44% | -0.11/-0.01 |
 | 2026-06-23 | Portugal v Uzbekistan | 1.9-0.4 | 1-0 | 72%/20%/8% | 42% | +0.06/-0.09 |
 | 2026-06-23 | Colombia v Congo DR | 1.7-0.7 | 1-0 | 61%/24%/15% | 40% | +0.09/-0.02 |
 | 2026-06-23 | England v Ghana | 2.2-0.8 | 2-0 | 70%/18%/12% | 56% | +0.06/-0.11 |
@@ -79,10 +75,6 @@ _From real player data: squad rating, average age (seniority), stylistic tilt, a
 
 | Team | Tier | Squad ovr | Avg age | Style | Talisman |
 |---|---|---|---|---|---|
-| France | Elite contender | 85.6 | 27.3 | attack-leaning | K. Mbappé |
-| Norway | Solid outfit | 76.8 | 26.1 | attack-leaning | E. Haaland |
-| Argentina | Elite contender | 84.4 | 29.0 | attack-leaning | L. Messi |
-| Jordan | Developing team | 64.3 | 26.7 | attack-leaning | M. Al-Tamari |
 | Portugal | Elite contender | 84.2 | 27.6 | attack-leaning | Cristiano Ronaldo |
 | Colombia | Strong side | 79.4 | 29.3 | attack-leaning | J. Cuadrado |
 | England | Elite contender | 85.1 | 26.7 | attack-leaning | H. Kane |
@@ -93,10 +85,6 @@ _From real player data: squad rating, average age (seniority), stylistic tilt, a
 | South Africa | Developing team | 70.8 | 28.4 | well-balanced | L. Singh |
 | Mexico | Strong side | 79.0 | 30.8 | attack-leaning | C. Vela |
 | Canada | Developing team | 73.6 | 27.9 | well-balanced | A. Davies |
-| Iraq | Developing team | 66.5 | 29.8 | attack-leaning | A. Yasin |
-| Senegal | Solid outfit | 78.8 | 27.7 | well-balanced | S. Mané |
-| Austria | Solid outfit | 78.9 | 27.8 | well-balanced | D. Alaba |
-| Algeria | Solid outfit | 77.9 | 27.9 | attack-leaning | R. Mahrez |
 | Uzbekistan | Developing team | 68.2 | 27.2 | well-balanced | O. Akhmedov |
 | Congo DR | Developing team | 74.2 | 28.1 | attack-leaning | C. Bakambu |
 | Ghana | Developing team | 75.8 | 27.0 | well-balanced | T. Partey |

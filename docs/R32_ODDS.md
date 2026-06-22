@@ -1,11 +1,11 @@
 # Mexico — Round of 32 Opponent Odds
 
-_Goal forecast + win/draw/loss vs each candidate opponent, at **Estadio Azteca (home)**. Model = Bayesian goals (with home edge + current form); Elo = recency cross-check (win excl. draw). Sorted hardest-first. Compiled 2026-06-21._
+_Goal forecast + win/draw/loss vs each candidate opponent, at **Estadio Azteca (home)**. Model = Bayesian goals (with home edge + current form); Elo = recency cross-check (win excl. draw). Sorted hardest-first. Compiled 2026-06-22._
 
 | Opponent | Likely | **Win** | Draw | Loss | Over 2.5 | Elo win | Opp Elo rank |
 |---|---|---|---|---|---|---|---|
 | Ecuador | 0-0 | **34%** | 37% | 28% | 18% | 66% | 14 |
-| Cape Verde | 1-0 | **49%** | 28% | 23% | 36% | 77% | 30 |
+| Cape Verde | 1-0 | **50%** | 28% | 22% | 35% | 77% | 30 |
 | Scotland | 1-0 | **51%** | 27% | 22% | 40% | 77% | 29 |
 
 **Toughest draw: Ecuador** (34% win) — lowest win probability of the set.

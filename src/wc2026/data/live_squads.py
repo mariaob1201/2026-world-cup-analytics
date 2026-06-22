@@ -99,32 +99,57 @@ def fetch_squads(force: bool = False) -> pd.DataFrame:
     return parse_squads(wikitext)
 
 
+def _youth_pace_weight(age):
+    """Pace peaks young and declines with age — so young attackers' pace counts
+    more (speed threat). ~1.2 at 20, ~1.0 at 30, ~0.85 at 35."""
+    import numpy as np
+    return np.clip(1.20 - np.maximum(0, age - 23) * 0.03, 0.75, 1.20)
+
+
+def _experience_weight(age):
+    """Defensive reading / ball retention improves with experience — so senior
+    defenders' solidity counts more. ~0.8 at 22, ~1.0 at 30, capped ~1.25."""
+    import numpy as np
+    return np.clip(0.80 + np.maximum(0, age - 22) * 0.025, 0.80, 1.25)
+
+
 def live_team_features(live: pd.DataFrame, fifa: pd.DataFrame) -> pd.DataFrame:
-    """Per-team prior built from the REAL roster + best-effort skill join.
+    """Per-team prior from the REAL roster + skill join + an AGE×ROLE signal.
 
-    Roster, position, age (seniority) and caps (longevity) are REAL (Wikipedia).
-    Skill `overall` is joined from a ratings table by last name where it matches;
-    unmatched players (newcomers) fall back to their team's median. This makes the
-    model prior reflect who is actually selected, not a vintage snapshot.
+    Roster, position, age and caps are REAL (Wikipedia). Skills (overall, pace,
+    defending) are joined from FIFA by last name (team-median fill for unmatched).
+    On top of overall quality, an **age×role×skill** term encodes:
 
-    Returns columns: team, squad_overall, avg_caps, avg_age, prior_strength.
+    * **young pace in attack** — attackers' pace weighted up for younger players
+      (speed peaks young);
+    * **senior solidity in defence** — defenders' defending weighted up for older
+      players (positioning / ball retention improve with experience).
+
+    Both fold into `prior_strength` with a small weight (the model's `beta_prior`
+    still learns how much to trust the prior overall). Columns: squad_overall,
+    avg_caps, avg_age, young_pace, senior_solidity, age_role, prior_strength.
     """
     import numpy as np
 
     def last(n):
         return str(n).split()[-1].lower()
 
-    rt = fifa[["short_name", "overall"]].copy()
+    cols = ["short_name", "overall", "pace", "defending"]
+    rt = fifa[cols].copy()
     rt["_last"] = rt["short_name"].map(last)
     rt = rt.sort_values("overall", ascending=False).drop_duplicates("_last")
     m = live.copy()
     m["_last"] = m["name"].map(last)
-    m = m.merge(rt[["_last", "overall"]], on="_last", how="left")
+    m = m.merge(rt[["_last", "overall", "pace", "defending"]], on="_last", how="left")
 
-    # Fill missing overall with the team's median of matched players (else global).
-    gmed = m["overall"].median()
-    m["overall"] = m.groupby("team")["overall"].transform(
-        lambda s: s.fillna(s.median())).fillna(gmed)
+    # Fill missing skills with each team's median (else global). GKs lack
+    # pace/defending in FIFA -> same fill.
+    for c in ("overall", "pace", "defending"):
+        gmed = m[c].median()
+        m[c] = m.groupby("team")[c].transform(lambda s: s.fillna(s.median())).fillna(gmed)
+
+    m["pace_w"] = m["pace"] * _youth_pace_weight(m["age"])
+    m["def_w"] = m["defending"] * _experience_weight(m["age"])
 
     def z(s):
         sd = s.std(ddof=0)
@@ -133,16 +158,28 @@ def live_team_features(live: pd.DataFrame, fifa: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for team, g in m.groupby("team"):
         core = g.nlargest(16, "overall")
-        rows.append({"team": team,
-                     "squad_overall": round(core["overall"].mean(), 1),
-                     "avg_caps": round(g["caps"].mean(), 1),
-                     "avg_age": round(g["age"].mean(), 1)})
+        att = g[g["position"].isin(["FW", "MF"])]
+        deff = g[g["position"] == "DF"]
+        rows.append({
+            "team": team,
+            "squad_overall": round(core["overall"].mean(), 1),
+            "avg_caps": round(g["caps"].mean(), 1),
+            "avg_age": round(g["age"].mean(), 1),
+            # young pace in attack; senior solidity in defence
+            "young_pace": round(att["pace_w"].mean(), 1) if len(att) else np.nan,
+            "senior_solidity": round(deff["def_w"].mean(), 1) if len(deff) else np.nan,
+        })
     tf = pd.DataFrame(rows)
-    # Skill dominates: caps/age are experience, not quality, so they only nudge
-    # (a heavy caps weight wrongly lifts veteran-but-modest squads like Panama).
-    composite = (0.88 * z(tf["squad_overall"])
-                 + 0.07 * z(np.log1p(tf["avg_caps"]))
-                 + 0.05 * z(tf["avg_age"]))
+    tf["young_pace"] = tf["young_pace"].fillna(tf["young_pace"].mean())
+    tf["senior_solidity"] = tf["senior_solidity"].fillna(tf["senior_solidity"].mean())
+    tf["age_role"] = (0.5 * z(tf["young_pace"]) + 0.5 * z(tf["senior_solidity"])).round(3)
+
+    # Skill dominates; caps/age nudge; the age×role term adds a small,
+    # role-aware adjustment (validate its weight on the EVALUATION scoreboard).
+    composite = (0.80 * z(tf["squad_overall"])
+                 + 0.06 * z(np.log1p(tf["avg_caps"]))
+                 + 0.04 * z(tf["avg_age"])
+                 + 0.10 * z(tf["age_role"]))
     tf["prior_strength"] = (z(composite) * 0.5).round(4)
     return tf.sort_values("prior_strength", ascending=False).reset_index(drop=True)
 
