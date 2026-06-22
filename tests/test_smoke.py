@@ -262,6 +262,20 @@ def test_live_squads_parser():
     assert j["position"] == "FW" and j["caps"] == 124 and j["age"] == 35
 
 
+def test_sentiment_feature(monkeypatch):
+    """Social-sentiment feature: neutral (0) with no LLM; shifts stay capped."""
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    from wc2026.features.sentiment import CAP, sentiment_shifts, social_sentiment
+
+    scores = social_sentiment({"Mexico": "fans buzzing after the win",
+                               "Brazil": "crisis talk in the press"})
+    assert scores["Mexico"] == 0.0 and scores["Brazil"] == 0.0   # no LLM -> neutral
+    shifts = sentiment_shifts({"A": 1.0, "B": -1.0, "C": 0.2})
+    assert shifts["A"] == CAP and shifts["B"] == -CAP
+    assert all(abs(v) <= CAP + 1e-9 for v in shifts.values())
+
+
 def test_llm_extract_fallback(monkeypatch):
     """Feature extractor returns a neutral stub without an LLM, and maps signal."""
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)

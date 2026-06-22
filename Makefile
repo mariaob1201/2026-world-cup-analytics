@@ -77,6 +77,10 @@ fetch-xg:
 form-signal:
 	$(PY) scripts/24_form_signal.py $(ARGS)
 
+# Spatial team-style profiles from StatsBomb x,y (territory, press, shot location).
+spatial:
+	$(PY) scripts/25_spatial.py $(ARGS)
+
 # Backtest the xG model vs the goals model (run `make fetch-xg` first;
 # `make xg-backtest ARGS=--demo` runs a synthetic sanity check instead).
 xg-backtest:

@@ -147,6 +147,26 @@ Brazil/Belgium/Spain in-form, Panama/Costa Rica cold). **Live 2026 caveat:** thi
 needs a per-match xG/shots feed; until 2026 xG is available it falls back to the
 goal-based momentum already wired into the tracker.
 
+## Exploratory "spice" features
+
+Two extra feature families, to enrich the team profile / condition predictions.
+Both are **opt-in and unproven** — add as covariates and keep only what lowers
+RPS on the [scoreboard](EVALUATION.md).
+
+- **Spatial style** (`data/statsbomb.team_spatial_profiles`, `make spatial`) —
+  from StatsBomb x,y event locations: `territory` (how high a team plays),
+  `press_height` (defensive actions in the attacking half), `box_share` and
+  `shot_dist` (shot quality by location). Real, data-backed: 2022 flags
+  Germany/Spain as high-press, Brazil/France as most territorial, Poland with the
+  best shot locations.
+- **Social/semantic sentiment** (`features/sentiment.py`) — runs per-team
+  social/news text through the LLM extractor → a sentiment score → a small capped
+  goal-rate nudge. You supply the text (X collector, news); no key → neutral.
+
+> Caveat: sentiment is weak/noisy and spatial features are stylistic, not
+> outcomes — they're "spice", validated on RPS before they earn a place. And both
+> need a live per-match/per-team feed for 2026 (StatsBomb hasn't released it).
+
 ## Suggested next builds
 
 - Wire `llm_extract` output into `momentum.combined_shifts` (news → goal nudge).

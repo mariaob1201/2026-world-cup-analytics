@@ -30,6 +30,67 @@ def _get(url: str):
 # Shot outcomes that count as "on target".
 _ON_TARGET = {"Goal", "Saved", "Saved to Post"}
 
+# Defensive-action event types (for pressing/territory).
+_DEF_ACTIONS = {"Pressure", "Interception", "Ball Recovery", "Block",
+                "Clearance", "Duel", "Foul Committed"}
+import math  # noqa: E402
+
+
+def team_spatial_profiles(year: int) -> "pd.DataFrame":
+    """Per-team SPATIAL style from StatsBomb x,y event locations (a WC year).
+
+    The pitch is 120x80, goal at (120, 40). Per team, averaged over its matches:
+
+    * ``shot_dist``    — mean distance of its shots from goal (lower = better
+      locations / works the ball into dangerous areas).
+    * ``box_share``    — share of its shots taken inside the penalty box.
+    * ``territory``    — mean x of its passes/carries (higher = plays more
+      advanced; territorial dominance).
+    * ``press_height`` — share of its defensive actions in the attacking half
+      (higher = high press).
+
+    This is the "spatial analysis" spice: *where* and *how* a team plays, not just
+    how much. Feed as covariates / a style layer — and validate on the scoreboard.
+    """
+    season = WORLD_CUPS[year]
+    matches = _get(f"{BASE}/matches/43/{season}.json")
+    from collections import defaultdict
+    sd = defaultdict(float); shots = defaultdict(int); box = defaultdict(int)
+    terr = defaultdict(float); terrn = defaultdict(int)
+    press = defaultdict(int); defn = defaultdict(int); games = defaultdict(set)
+
+    for m in matches:
+        for e in _get(f"{BASE}/events/{m['match_id']}.json"):
+            t = e.get("team", {}).get("name")
+            loc = e.get("location")
+            typ = e.get("type", {}).get("name")
+            if not t or not loc:
+                continue
+            x, y = loc[0], loc[1]
+            games[t].add(m["match_id"])
+            if typ == "Shot":
+                sd[t] += math.hypot(120 - x, 40 - y); shots[t] += 1
+                if x >= 102 and 18 <= y <= 62:
+                    box[t] += 1
+            elif typ in ("Pass", "Carry"):
+                terr[t] += x; terrn[t] += 1
+            elif typ in _DEF_ACTIONS:
+                defn[t] += 1
+                if x > 60:
+                    press[t] += 1
+
+    rows = []
+    for t in games:
+        if shots[t] and terrn[t] and defn[t]:
+            rows.append({
+                "team": t, "matches": len(games[t]),
+                "shot_dist": round(sd[t] / shots[t], 1),
+                "box_share": round(box[t] / shots[t], 3),
+                "territory": round(terr[t] / terrn[t], 1),
+                "press_height": round(press[t] / defn[t], 3),
+            })
+    return pd.DataFrame(rows).sort_values("territory", ascending=False).reset_index(drop=True)
+
 
 def fetch_world_cup_xg(year: int) -> pd.DataFrame:
     """Per-match team stats for a World Cup year (2018 or 2022).
