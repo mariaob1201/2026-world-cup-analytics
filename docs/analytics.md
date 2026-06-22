@@ -12,7 +12,7 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 - **Predicted vs actual goals** (`artifacts/goals_pred_vs_actual.png`) — scatter of expected vs real total goals per played match.
 - **Forecast win/draw/win** (`artifacts/forecast_probs.png`) — stacked 1X2 bars for upcoming fixtures.
 
-**Tracking metrics (36 matches):** outcome hit-rate 61% · total-goals MAE 1.49. Re-run to update as results come in.
+**Tracking metrics (40 matches):** outcome hit-rate 60% · total-goals MAE 1.55. Re-run to update as results come in.
 
 ## Match sentiment & momentum (next fixtures)
 
@@ -24,10 +24,10 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 | Panama v Croatia | dipping (-0.08) | dipping (-0.10) | **even** |
 | Morocco v Haiti | rising (+0.07) | steady (-0.03) | **Morocco** |
 | Bosnia-Herzegovina v Qatar | dipping (-0.08) | cold (-0.18) | **Bosnia-Herzegovina** |
-| Scotland v Brazil | steady (+0.04) | red-hot (+0.15) | **Brazil** |
+| Scotland v Brazil | steady (+0.04) | red-hot (+0.14) | **Brazil** |
 | South Africa v South Korea | dipping (-0.07) | dipping (-0.05) | **even** |
 | Mexico v Czechia | rising (+0.09) | steady (-0.05) | **Mexico** |
-| Canada v Switzerland | red-hot (+0.16) | red-hot (+0.12) | **even** |
+| Canada v Switzerland | red-hot (+0.15) | rising (+0.12) | **even** |
 
 ## Tactical read (next fixtures)
 

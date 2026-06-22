@@ -4,10 +4,10 @@ _Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad p
 
 ## Accuracy so far (out-of-sample)
 
-- **Matches scored:** 36
-- **Outcome hit-rate:** 61% (predicted W/D/L matched actual)
-- **Mean probability on the actual outcome:** 0.43 · **Brier score:** 0.553 (lower is better)
-- **Total-goals mean abs error:** 1.49 goals/match
+- **Matches scored:** 40
+- **Outcome hit-rate:** 60% (predicted W/D/L matched actual)
+- **Mean probability on the actual outcome:** 0.43 · **Brier score:** 0.566 (lower is better)
+- **Total-goals mean abs error:** 1.55 goals/match
 
 > Read these as a small-sample sanity check (one matchday), not a verdict. Blowouts like Germany 7-1 and Canada 6-0 inflate the goals error — the model is calibrated to typical scorelines, not outliers.
 
@@ -16,11 +16,11 @@ _Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad p
 | Date | Fixture | Pred xG | Likely | P(H/D/A) | Actual | ✓ |
 |---|---|---|---|---|---|:--:|
 | 2026-06-11 | Mexico v South Africa | 1.6-0.8 | 1-0 | 54%/25%/20% | **2-0** | ✅ |
-| 2026-06-11 | South Korea v Czechia | 1.3-1.4 | 1-1 | 34%/25%/41% | **2-1** | — |
+| 2026-06-11 | South Korea v Czechia | 1.3-1.5 | 1-1 | 34%/25%/41% | **2-1** | — |
 | 2026-06-12 | Canada v Bosnia-Herzegovina | 1.8-0.9 | 1-0 | 57%/23%/19% | **1-1** | — |
 | 2026-06-12 | United States v Paraguay | 1.3-1.1 | 1-1 | 41%/28%/31% | **4-1** | ✅ |
 | 2026-06-13 | Qatar v Switzerland | 1.0-2.3 | 1-2 | 16%/19%/65% | **1-1** | — |
-| 2026-06-13 | Brazil v Morocco | 1.5-1.0 | 1-1 | 48%/26%/26% | **1-1** | — |
+| 2026-06-13 | Brazil v Morocco | 1.5-1.0 | 1-1 | 47%/26%/27% | **1-1** | — |
 | 2026-06-13 | Haiti v Scotland | 0.7-1.6 | 0-1 | 16%/25%/59% | **0-1** | ✅ |
 | 2026-06-13 | Australia v Türkiye | 1.3-1.1 | 1-1 | 40%/28%/32% | **2-0** | ✅ |
 | 2026-06-14 | Sweden v Tunisia | 1.1-1.2 | 1-1 | 34%/28%/38% | **5-1** | — |
@@ -33,7 +33,7 @@ _Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad p
 | 2026-06-15 | Saudi Arabia v Uruguay | 0.5-1.2 | 0-1 | 16%/30%/53% | **1-1** | — |
 | 2026-06-16 | Austria v Jordan | 2.0-0.6 | 1-0 | 70%/20%/10% | **3-1** | ✅ |
 | 2026-06-16 | Argentina v Algeria | 1.6-0.9 | 1-0 | 54%/25%/21% | **3-0** | ✅ |
-| 2026-06-16 | France v Senegal | 1.6-0.8 | 1-0 | 58%/25%/18% | **3-1** | ✅ |
+| 2026-06-16 | France v Senegal | 1.6-0.8 | 1-0 | 58%/24%/18% | **3-1** | ✅ |
 | 2026-06-16 | Iraq v Norway | 0.9-1.3 | 0-1 | 25%/28%/47% | **1-4** | ✅ |
 | 2026-06-17 | Portugal v Congo DR | 1.8-0.6 | 1-0 | 64%/23%/13% | **1-1** | — |
 | 2026-06-17 | Uzbekistan v Colombia | 0.5-1.6 | 0-1 | 12%/25%/63% | **1-3** | ✅ |
@@ -43,14 +43,18 @@ _Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad p
 | 2026-06-18 | Mexico v South Korea | 1.9-1.1 | 1-1 | 54%/23%/24% | **1-0** | ✅ |
 | 2026-06-18 | Switzerland v Bosnia-Herzegovina | 2.1-1.0 | 1-0 | 61%/21%/18% | **4-1** | ✅ |
 | 2026-06-18 | Canada v Qatar | 2.0-0.9 | 1-0 | 62%/21%/17% | **6-0** | ✅ |
-| 2026-06-19 | Türkiye v Paraguay | 1.0-1.2 | 1-1 | 31%/28%/41% | **0-1** | ✅ |
-| 2026-06-19 | Scotland v Morocco | 0.9-1.3 | 0-1 | 27%/28%/45% | **0-1** | ✅ |
+| 2026-06-19 | Türkiye v Paraguay | 1.0-1.2 | 1-1 | 31%/28%/40% | **0-1** | ✅ |
+| 2026-06-19 | Scotland v Morocco | 0.9-1.3 | 0-1 | 27%/28%/46% | **0-1** | ✅ |
 | 2026-06-19 | Brazil v Haiti | 2.5-0.5 | 2-0 | 79%/14%/6% | **3-0** | ✅ |
-| 2026-06-19 | United States v Australia | 1.3-1.1 | 1-1 | 43%/27%/30% | **2-0** | ✅ |
+| 2026-06-19 | United States v Australia | 1.3-1.1 | 1-1 | 42%/27%/30% | **2-0** | ✅ |
 | 2026-06-20 | Netherlands v Sweden | 2.0-1.2 | 1-1 | 55%/22%/23% | **5-1** | ✅ |
 | 2026-06-20 | Tunisia v Japan | 0.7-1.1 | 0-1 | 25%/32%/43% | **0-4** | ✅ |
 | 2026-06-20 | Germany v Ivory Coast | 1.6-1.1 | 1-1 | 47%/25%/28% | **2-1** | ✅ |
-| 2026-06-20 | Ecuador v Curaçao | 1.7-0.5 | 1-0 | 67%/23%/10% | **0-0** | — |
+| 2026-06-20 | Ecuador v Curaçao | 1.7-0.5 | 1-0 | 68%/23%/10% | **0-0** | — |
+| 2026-06-21 | Belgium v Iran | 1.9-0.8 | 1-0 | 62%/22%/16% | **0-0** | — |
+| 2026-06-21 | New Zealand v Egypt | 0.8-1.1 | 0-1 | 25%/31%/44% | **1-3** | ✅ |
+| 2026-06-21 | Spain v Saudi Arabia | 1.6-0.6 | 1-0 | 59%/26%/15% | **4-0** | ✅ |
+| 2026-06-21 | Uruguay v Cape Verde | 1.6-0.5 | 1-0 | 62%/25%/13% | **2-2** | — |
 
 ## Forecast — next fixtures (with momentum nudge)
 
@@ -63,11 +67,11 @@ _`Mom` = recency-weighted form (+ scouted sentiment) applied as a small, capped 
 | 2026-06-23 | England v Ghana | 2.2-0.8 | 2-0 | 70%/18%/12% | 56% | +0.06/-0.11 |
 | 2026-06-23 | Panama v Croatia | 0.5-1.6 | 0-1 | 12%/24%/64% | 36% | -0.08/-0.10 |
 | 2026-06-24 | Morocco v Haiti | 1.8-0.5 | 1-0 | 68%/22%/10% | 39% | +0.07/-0.03 |
-| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.6-1.3 | 1-1 | 43%/25%/32% | 54% | -0.08/-0.18 |
-| 2026-06-24 | Scotland v Brazil | 1.0-2.4 | 1-2 | 16%/18%/66% | 65% | +0.04/+0.15 |
-| 2026-06-24 | South Africa v South Korea | 0.9-1.1 | 0-1 | 30%/30%/39% | 33% | -0.07/-0.05 |
+| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.6-1.3 | 1-1 | 44%/25%/32% | 54% | -0.08/-0.18 |
+| 2026-06-24 | Scotland v Brazil | 1.0-2.4 | 1-2 | 16%/18%/66% | 65% | +0.04/+0.14 |
+| 2026-06-24 | South Africa v South Korea | 0.9-1.1 | 0-1 | 31%/30%/39% | 33% | -0.07/-0.05 |
 | 2026-06-24 | Mexico v Czechia | 1.9-1.2 | 1-1 | 55%/22%/23% | 59% | +0.09/-0.05 |
-| 2026-06-24 | Canada v Switzerland | 1.4-1.4 | 1-1 | 38%/25%/38% | 54% | +0.16/+0.12 |
+| 2026-06-24 | Canada v Switzerland | 1.4-1.4 | 1-1 | 38%/25%/38% | 53% | +0.15/+0.12 |
 
 ## Squad & player context (forecast teams)
 

@@ -4,17 +4,17 @@ _A growing, append-on-result ledger: every goal forecast and how it turned out. 
 
 ## Running accuracy (resolved matches)
 
-- **Matches scored:** 36
-- **Outcome hit-rate:** 61%
-- **Goal-total MAE:** 1.489 goals/match
-- **RPS:** 0.1676 · **log-loss:** 0.9197 (lower better)
+- **Matches scored:** 40
+- **Outcome hit-rate:** 60%
+- **Goal-total MAE:** 1.551 goals/match
+- **RPS:** 0.1681 · **log-loss:** 0.934 (lower better)
 
 ## Resolved — forecast vs actual
 
 | Date | Fixture | Forecast (xG) | Pred | Actual | ✓ |
 |---|---|---|---|---|:--:|
 | 2026-06-11 | Mexico v South Africa | 1.6-0.8 | 1-0 | **2-0** | ✅ |
-| 2026-06-11 | South Korea v Czechia | 1.3-1.4 | 1-1 | **2-1** | — |
+| 2026-06-11 | South Korea v Czechia | 1.3-1.5 | 1-1 | **2-1** | — |
 | 2026-06-12 | Canada v Bosnia-Herzegovina | 1.8-0.9 | 1-0 | **1-1** | — |
 | 2026-06-12 | United States v Paraguay | 1.3-1.1 | 1-1 | **4-1** | ✅ |
 | 2026-06-13 | Qatar v Switzerland | 1.0-2.3 | 1-2 | **1-1** | — |
@@ -49,6 +49,10 @@ _A growing, append-on-result ledger: every goal forecast and how it turned out. 
 | 2026-06-20 | Tunisia v Japan | 0.7-1.1 | 0-1 | **0-4** | ✅ |
 | 2026-06-20 | Germany v Ivory Coast | 1.6-1.1 | 1-1 | **2-1** | ✅ |
 | 2026-06-20 | Ecuador v Curaçao | 1.7-0.5 | 1-0 | **0-0** | — |
+| 2026-06-21 | Belgium v Iran | 1.9-0.8 | 1-0 | **0-0** | — |
+| 2026-06-21 | New Zealand v Egypt | 0.8-1.1 | 0-1 | **1-3** | ✅ |
+| 2026-06-21 | Spain v Saudi Arabia | 1.6-0.6 | 1-0 | **4-0** | ✅ |
+| 2026-06-21 | Uruguay v Cape Verde | 1.6-0.5 | 1-0 | **2-2** | — |
 
 ## Pending — forecasts awaiting kickoff
 
@@ -59,9 +63,9 @@ _A growing, append-on-result ledger: every goal forecast and how it turned out. 
 | 2026-06-23 | England v Ghana | 2.2-0.8 | 2-0 | 70%/18%/12% |
 | 2026-06-23 | Panama v Croatia | 0.5-1.6 | 0-1 | 12%/24%/64% |
 | 2026-06-24 | Morocco v Haiti | 1.8-0.5 | 1-0 | 68%/22%/10% |
-| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.6-1.3 | 1-1 | 43%/25%/32% |
+| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.6-1.3 | 1-1 | 44%/25%/32% |
 | 2026-06-24 | Scotland v Brazil | 1.0-2.4 | 1-2 | 16%/18%/66% |
-| 2026-06-24 | South Africa v South Korea | 0.9-1.1 | 0-1 | 30%/30%/39% |
+| 2026-06-24 | South Africa v South Korea | 0.9-1.1 | 0-1 | 31%/30%/39% |
 | 2026-06-24 | Mexico v Czechia | 1.9-1.2 | 1-1 | 55%/22%/23% |
 | 2026-06-24 | Canada v Switzerland | 1.4-1.4 | 1-1 | 38%/25%/38% |
 

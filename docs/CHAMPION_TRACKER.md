@@ -40,11 +40,11 @@ _Mexico's Round-of-32 opponent odds (per candidate): [R32_ODDS.md](R32_ODDS.md) 
 | 2026-06-23 | England v Ghana | 2.0-0.7 | 1-0 | 67%/20%/12% | rising |
 | 2026-06-23 | Panama v Croatia | 0.8-1.6 | 0-1 | 19%/25%/57% | dipping |
 | 2026-06-24 | Morocco v Haiti | 1.8-0.6 | 1-0 | 66%/22%/12% | rising |
-| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.7-1.0 | 1-0 | 53%/24%/23% | dipping |
-| 2026-06-24 | Scotland v Brazil | 0.9-2.0 | 0-1 | 16%/20%/63% | steady |
-| 2026-06-24 | South Africa v South Korea | 0.9-0.8 | 0-0 | 36%/33%/31% | dipping |
-| 2026-06-24 | Mexico v Czechia | 1.9-0.8 | 1-0 | 62%/22%/16% | rising |
-| 2026-06-24 | Canada v Switzerland | 1.4-1.3 | 1-1 | 38%/26%/36% | red-hot |
+| 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.7-1.1 | 1-0 | 53%/24%/24% | dipping |
+| 2026-06-24 | Scotland v Brazil | 0.9-2.0 | 0-1 | 16%/21%/63% | steady |
+| 2026-06-24 | South Africa v South Korea | 1.0-0.8 | 0-0 | 37%/33%/30% | dipping |
+| 2026-06-24 | Mexico v Czechia | 1.8-0.8 | 1-0 | 62%/22%/16% | rising |
+| 2026-06-24 | Canada v Switzerland | 1.3-1.3 | 1-1 | 38%/26%/36% | red-hot |
 
 ## Current group standings (played)
 
@@ -56,8 +56,10 @@ _Mexico's Round-of-32 opponent odds (per candidate): [R32_ODDS.md](R32_ODDS.md) 
 | Canada | 2 | 4 | +6 |
 | Netherlands | 2 | 4 | +4 |
 | Japan | 2 | 4 | +4 |
+| Spain | 2 | 4 | +4 |
 | Switzerland | 2 | 4 | +3 |
 | Brazil | 2 | 4 | +3 |
+| Egypt | 2 | 4 | +2 |
 | Morocco | 2 | 4 | +1 |
 | Norway | 1 | 3 | +3 |
 | Argentina | 1 | 3 | +3 |
@@ -72,20 +74,18 @@ _Mexico's Round-of-32 opponent odds (per candidate): [R32_ODDS.md](R32_ODDS.md) 
 | Ivory Coast | 2 | 3 | +0 |
 | Sweden | 2 | 3 | +0 |
 | Paraguay | 2 | 3 | -2 |
-| Belgium | 1 | 1 | +0 |
-| Egypt | 1 | 1 | +0 |
-| Iran | 1 | 1 | +0 |
-| New Zealand | 1 | 1 | +0 |
-| Spain | 1 | 1 | +0 |
-| Cape Verde | 1 | 1 | +0 |
-| Saudi Arabia | 1 | 1 | +0 |
-| Uruguay | 1 | 1 | +0 |
+| Belgium | 2 | 2 | +0 |
+| Iran | 2 | 2 | +0 |
+| Cape Verde | 2 | 2 | +0 |
+| Uruguay | 2 | 2 | +0 |
 | Portugal | 1 | 1 | +0 |
 | Congo DR | 1 | 1 | +0 |
 | Czechia | 2 | 1 | -1 |
 | Ecuador | 2 | 1 | -1 |
 | South Africa | 2 | 1 | -2 |
+| New Zealand | 2 | 1 | -2 |
 | Bosnia-Herzegovina | 2 | 1 | -3 |
+| Saudi Arabia | 2 | 1 | -4 |
 | Qatar | 2 | 1 | -6 |
 | Curaçao | 2 | 1 | -6 |
 | Panama | 1 | 0 | -1 |
