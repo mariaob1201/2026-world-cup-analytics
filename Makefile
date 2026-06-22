@@ -81,6 +81,10 @@ form-signal:
 spatial:
 	$(PY) scripts/25_spatial.py $(ARGS)
 
+# Simulation-Based Inference demo: rejection-ABC vs truth vs exact MCMC.
+sbi-demo:
+	$(PY) scripts/26_sbi_abc.py
+
 # Backtest the xG model vs the goals model (run `make fetch-xg` first;
 # `make xg-backtest ARGS=--demo` runs a synthetic sanity check instead).
 xg-backtest:

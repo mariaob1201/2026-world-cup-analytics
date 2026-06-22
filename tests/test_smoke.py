@@ -347,6 +347,20 @@ def test_metrics():
     assert m["n"] == 1 and 0 <= m["RPS"] <= 1 and m["goals_MAE"] == 0.9
 
 
+def test_abc_recovers_truth():
+    """Rejection-ABC (likelihood-free) recovers the home advantage it generated."""
+    import numpy as np
+
+    from wc2026.models.abc import (TRUE_HOME_ADV, TRUE_INTERCEPT, TRUE_STR,
+                                   abc_infer, fixtures, simulate, summary)
+    rng = np.random.default_rng(0)
+    hi, ai = fixtures(250, rng)
+    gh, ga = simulate(TRUE_STR, TRUE_HOME_ADV, TRUE_INTERCEPT, hi, ai, rng)
+    post = abc_infer(summary(gh, ga, hi, ai), hi, ai, n_sims=3000, seed=1)
+    assert abs(post["home_adv"].mean() - TRUE_HOME_ADV) < 0.15
+    assert post["str_T0"].mean() > post["str_T5"].mean()   # strong > weak
+
+
 def test_model_fits_tiny():
     """A minimal NUTS run just to prove the model compiles and samples."""
     import pymc as pm  # imported here so non-model tests don't pay the cost
