@@ -28,10 +28,31 @@ from wc2026.models.bayesian_score import build_model, build_xg_model, predict_ma
 from wc2026.models.metrics import evaluate
 
 
-def _fit(builder, train, teams):
-    with builder(train, teams, prior_strength=np.zeros(len(teams))):
+def _fit(builder, train, teams, prior=None):
+    if prior is None:
+        prior = np.zeros(len(teams))
+    with builder(train, teams, prior_strength=prior):
         return pm.sample(draws=600, tune=600, chains=2, cores=1,
                          target_accept=0.9, progressbar=False, random_seed=11)
+
+
+def _spatial_prior(train, teams):
+    """Per-team spatial covariate from TRAINING matches only (leakage-free):
+    z(territory) + z(press), scaled to the prior_strength range."""
+    terr = {t: [] for t in teams}
+    pres = {t: [] for t in teams}
+    for m in train.itertuples():
+        terr[m.home_team].append(m.home_territory); pres[m.home_team].append(m.home_press)
+        terr[m.away_team].append(m.away_territory); pres[m.away_team].append(m.away_press)
+    tv = np.array([np.mean(terr[t]) if terr[t] else np.nan for t in teams])
+    pv = np.array([np.mean(pres[t]) if pres[t] else np.nan for t in teams])
+
+    def z(a):
+        a = np.where(np.isnan(a), np.nanmean(a), a)
+        return (a - a.mean()) / (a.std() or 1.0)
+
+    cov = 0.6 * z(tv) + 0.4 * z(pv)
+    return (cov - cov.mean()) / (cov.std() or 1.0) * 0.5
 
 
 def _score(idata, teams, test, stats=None, form_metric=None):
@@ -76,8 +97,15 @@ def compare(df: pd.DataFrame, label: str):
     conditioned = {f"goals+{mtr}-form": _score(goals_idata, teams, test, df, mtr)
                    for mtr in ("goals", "xg", "sot")}
 
+    # Spice test: spatial style (territory/press) as a leakage-free PRIOR covariate.
+    spatial = {}
+    if "home_territory" in df.columns:
+        sp_prior = _spatial_prior(train, teams)
+        spatial["goals+spatial-prior"] = _score(
+            _fit(build_model, train, teams, prior=sp_prior), teams, test)
+
     print(f"\n{'model':<16} {'RPS':>8} {'log_loss':>9} {'hit':>6} {'goalsMAE':>9}")
-    results = {"goals": goals, "xG": xg, **conditioned}
+    results = {"goals": goals, "xG": xg, **conditioned, **spatial}
     for name, m in results.items():
         print(f"{name:<16} {m['RPS']:>8.4f} {m['log_loss']:>9.4f} "
               f"{m['hit_rate']:>6.3f} {m.get('goals_MAE', float('nan')):>9.3f}")
@@ -96,7 +124,8 @@ def _write_doc(results, n_train, n_test, n_teams, delta, verdict, best):
     labels = {"goals": "goals model", "xG": "xG model (expected goals)",
               "goals+goals-form": "goals + recent-goals form",
               "goals+xg-form": "goals + recent-xG form",
-              "goals+sot-form": "goals + recent-SoT form"}
+              "goals+sot-form": "goals + recent-SoT form",
+              "goals+spatial-prior": "goals + spatial-style prior (territory/press)"}
     L = ["# xG & conditioning backtest\n",
          f"_Fit on {n_train} matches, scored on {n_test} held-out matches "
          f"({n_teams} teams), real per-match stats from StatsBomb open data "

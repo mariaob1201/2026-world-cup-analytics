@@ -9,6 +9,7 @@ _Fit on 102 matches, scored on 26 held-out matches (40 teams), real per-match st
 | goals + recent-goals form | 0.2345 | 1.0875 | 0.423 | 1.44 |
 | goals + recent-xG form | 0.2255 | 1.0605 | 0.462 | 1.403 |
 | goals + recent-SoT form ⭐ | 0.2231 | 1.0549 | 0.5 | 1.453 |
+| goals + spatial-style prior (territory/press) | 0.2299 | 1.0688 | 0.385 | 1.364 |
 
 **xG vs goals: -0.0025 RPS → xG WINS — keep it.** **Lowest RPS overall: goals + recent-SoT form.**
 

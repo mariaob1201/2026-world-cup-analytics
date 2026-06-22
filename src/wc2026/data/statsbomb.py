@@ -106,29 +106,40 @@ def fetch_world_cup_xg(year: int) -> pd.DataFrame:
         home = m["home_team"]["home_team_name"]
         away = m["away_team"]["away_team_name"]
         events = _get(f"{BASE}/events/{m['match_id']}.json")
-        acc = {home: dict(xg=0.0, shots=0, sot=0, passes=0),
-               away: dict(xg=0.0, shots=0, sot=0, passes=0)}
+        z = lambda: dict(xg=0.0, shots=0, sot=0, passes=0, terr=0.0, terrn=0,
+                         defacts=0, press=0)
+        acc = {home: z(), away: z()}
         for e in events:
             t = e.get("team", {}).get("name")
             if t not in acc:
                 continue
             typ = e.get("type", {}).get("name")
+            loc = e.get("location")
             if typ == "Shot":
                 shot = e.get("shot", {})
                 acc[t]["xg"] += shot.get("statsbomb_xg", 0.0) or 0.0
                 acc[t]["shots"] += 1
                 if shot.get("outcome", {}).get("name") in _ON_TARGET:
                     acc[t]["sot"] += 1
-            elif typ == "Pass":
-                acc[t]["passes"] += 1
+            elif typ in ("Pass", "Carry"):
+                if typ == "Pass":
+                    acc[t]["passes"] += 1
+                if loc:
+                    acc[t]["terr"] += loc[0]; acc[t]["terrn"] += 1
+            elif typ in _DEF_ACTIONS and loc:
+                acc[t]["defacts"] += 1
+                if loc[0] > 60:
+                    acc[t]["press"] += 1
         tot_pass = acc[home]["passes"] + acc[away]["passes"] or 1
-        rows.append({
-            "date": m["match_date"], "home_team": home, "away_team": away,
-            "home_goals": int(m["home_score"]), "away_goals": int(m["away_score"]),
-            "home_xg": round(acc[home]["xg"], 3), "away_xg": round(acc[away]["xg"], 3),
-            "home_shots": acc[home]["shots"], "away_shots": acc[away]["shots"],
-            "home_sot": acc[home]["sot"], "away_sot": acc[away]["sot"],
-            "home_poss": round(acc[home]["passes"] / tot_pass, 3),
-            "away_poss": round(acc[away]["passes"] / tot_pass, 3),
-        })
+        row = {"date": m["match_date"], "home_team": home, "away_team": away,
+               "home_goals": int(m["home_score"]), "away_goals": int(m["away_score"])}
+        for side, t in (("home", home), ("away", away)):
+            a = acc[t]
+            row[f"{side}_xg"] = round(a["xg"], 3)
+            row[f"{side}_shots"] = a["shots"]
+            row[f"{side}_sot"] = a["sot"]
+            row[f"{side}_poss"] = round(a["passes"] / tot_pass, 3)
+            row[f"{side}_territory"] = round(a["terr"] / (a["terrn"] or 1), 2)
+            row[f"{side}_press"] = round(a["press"] / (a["defacts"] or 1), 3)
+        rows.append(row)
     return pd.DataFrame(rows).sort_values("date").reset_index(drop=True)
