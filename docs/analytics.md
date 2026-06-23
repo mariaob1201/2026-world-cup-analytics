@@ -1,6 +1,6 @@
 # WC 2026 — Tracking Analytics, Sentiment & Tactics
 
-_Run after each matchday to track model calibration and read the next slate. Charts in `artifacts/`. Compiled 2026-06-22._
+_Run after each matchday to track model calibration and read the next slate. Charts in `artifacts/`. Compiled 2026-06-23._
 
 ## Tracking charts
 
@@ -12,40 +12,20 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 - **Predicted vs actual goals** (`artifacts/goals_pred_vs_actual.png`) — scatter of expected vs real total goals per played match.
 - **Forecast win/draw/win** (`artifacts/forecast_probs.png`) — stacked 1X2 bars for upcoming fixtures.
 
-**Tracking metrics (40 matches):** outcome hit-rate 60% · total-goals MAE 1.55. Re-run to update as results come in.
+**Tracking metrics (44 matches):** outcome hit-rate 61% · total-goals MAE 1.50. Re-run to update as results come in.
 
 ## Match sentiment & momentum (next fixtures)
 
 | Fixture | Home form | Away form | Momentum edge |
 |---|---|---|---|
-| Portugal v Uzbekistan | rising (+0.06) | dipping (-0.09) | **Portugal** |
-| Colombia v Congo DR | rising (+0.09) | steady (-0.02) | **Colombia** |
-| England v Ghana | rising (+0.06) | dipping (-0.11) | **England** |
-| Panama v Croatia | dipping (-0.08) | dipping (-0.10) | **even** |
 | Morocco v Haiti | rising (+0.07) | steady (-0.03) | **Morocco** |
 | Bosnia-Herzegovina v Qatar | dipping (-0.08) | cold (-0.18) | **Bosnia-Herzegovina** |
 | Scotland v Brazil | steady (+0.04) | red-hot (+0.14) | **Brazil** |
 | South Africa v South Korea | dipping (-0.07) | dipping (-0.05) | **even** |
 | Mexico v Czechia | rising (+0.09) | steady (-0.05) | **Mexico** |
-| Canada v Switzerland | red-hot (+0.15) | rising (+0.12) | **even** |
+| Canada v Switzerland | red-hot (+0.16) | rising (+0.12) | **even** |
 
 ## Tactical read (next fixtures)
-
-**Portugal v Uzbekistan** — best shapes 4-3-3 vs 3-4-3.
-  - Defence: home edge (85 vs 62) · Midfield: home edge (84 vs 67) · Attack: home edge (86 vs 68)
-  - home controls midfield; home built around its attack, away around its midfield.
-
-**Colombia v Congo DR** — best shapes 4-3-3 vs 4-4-2.
-  - Defence: home edge (80 vs 76) · Midfield: home edge (79 vs 75) · Attack: home edge (82 vs 75)
-  - home controls midfield; home built around its attack, away around its defence.
-
-**England v Ghana** — best shapes 4-3-3 vs 3-5-2.
-  - Defence: home edge (85 vs 76) · Midfield: home edge (85 vs 78) · Attack: home edge (88 vs 76)
-  - home controls midfield; home built around its attack, away around its midfield.
-
-**Panama v Croatia** — best shapes 4-4-2 vs 3-5-2.
-  - Defence: away edge (70 vs 78) · Midfield: away edge (70 vs 84) · Attack: away edge (68 vs 79)
-  - away controls midfield; home built around its defence, away around its midfield.
 
 **Morocco v Haiti** — best shapes 4-3-3 vs 3-4-3.
   - Defence: home edge (81 vs 61) · Midfield: home edge (76 vs 63) · Attack: home edge (82 vs 65)

@@ -1,13 +1,13 @@
 # 📒 Forecast Log — Predictions vs Ground Truth
 
-_A growing, append-on-result ledger: every goal forecast and how it turned out. Updated by the daily GitHub Action. Compiled 2026-06-22._
+_A growing, append-on-result ledger: every goal forecast and how it turned out. Updated by the daily GitHub Action. Compiled 2026-06-23._
 
 ## Running accuracy (resolved matches)
 
-- **Matches scored:** 40
-- **Outcome hit-rate:** 60%
-- **Goal-total MAE:** 1.551 goals/match
-- **RPS:** 0.1681 · **log-loss:** 0.934 (lower better)
+- **Matches scored:** 44
+- **Outcome hit-rate:** 61%
+- **Goal-total MAE:** 1.503 goals/match
+- **RPS:** 0.1657 · **log-loss:** 0.9075 (lower better)
 
 ## Resolved — forecast vs actual
 
@@ -53,15 +53,15 @@ _A growing, append-on-result ledger: every goal forecast and how it turned out. 
 | 2026-06-21 | New Zealand v Egypt | 0.8-1.1 | 0-1 | **1-3** | ✅ |
 | 2026-06-21 | Spain v Saudi Arabia | 1.6-0.6 | 1-0 | **4-0** | ✅ |
 | 2026-06-21 | Uruguay v Cape Verde | 1.6-0.5 | 1-0 | **2-2** | — |
+| 2026-06-22 | France v Iraq | 1.8-0.5 | 1-0 | **3-0** | ✅ |
+| 2026-06-22 | Norway v Senegal | 1.2-1.3 | 1-1 | **3-2** | — |
+| 2026-06-22 | Argentina v Austria | 1.5-0.9 | 1-0 | **2-0** | ✅ |
+| 2026-06-22 | Jordan v Algeria | 0.6-1.9 | 0-1 | **1-2** | ✅ |
 
 ## Pending — forecasts awaiting kickoff
 
 | Date | Fixture | Forecast (xG) | Likely | P(H/D/A) |
 |---|---|---|---|---|
-| 2026-06-23 | Portugal v Uzbekistan | 1.9-0.4 | 1-0 | 72%/20%/8% |
-| 2026-06-23 | Colombia v Congo DR | 1.7-0.7 | 1-0 | 61%/24%/15% |
-| 2026-06-23 | England v Ghana | 2.2-0.8 | 2-0 | 70%/18%/12% |
-| 2026-06-23 | Panama v Croatia | 0.5-1.6 | 0-1 | 12%/24%/64% |
 | 2026-06-24 | Morocco v Haiti | 1.8-0.5 | 1-0 | 68%/22%/10% |
 | 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.6-1.3 | 1-1 | 44%/25%/32% |
 | 2026-06-24 | Scotland v Brazil | 1.0-2.4 | 1-2 | 16%/18%/66% |
