@@ -90,14 +90,27 @@ def download_fifa(force: bool = False) -> pd.DataFrame:
     return pd.read_csv(FIFA_CSV_LOCAL, low_memory=False)
 
 
-def download_intl_results(force: bool = False) -> pd.DataFrame:
-    """Load the international results dataset, caching to data/raw/."""
+def download_intl_results(force: bool = False, max_age_hours: float = 6.0) -> pd.DataFrame:
+    """Load the international results dataset, caching to data/raw/.
+
+    The feed updates as the tournament is played, so a cache older than
+    ``max_age_hours`` is re-fetched. Without this, a stale local copy made the
+    forecasts lag reality by days (e.g. showing fewer games than were played).
+    """
     if INTL_RESULTS_LOCAL.exists() and not force:
-        return pd.read_csv(INTL_RESULTS_LOCAL, parse_dates=["date"])
+        import time
+        age_h = (time.time() - INTL_RESULTS_LOCAL.stat().st_mtime) / 3600
+        if age_h <= max_age_hours:
+            return pd.read_csv(INTL_RESULTS_LOCAL, parse_dates=["date"])
     import urllib.request
 
     RAW.mkdir(parents=True, exist_ok=True)
-    urllib.request.urlretrieve(INTL_RESULTS_URL, INTL_RESULTS_LOCAL)
+    try:
+        urllib.request.urlretrieve(INTL_RESULTS_URL, INTL_RESULTS_LOCAL)
+    except Exception:
+        if INTL_RESULTS_LOCAL.exists():  # network down — fall back to the cache
+            return pd.read_csv(INTL_RESULTS_LOCAL, parse_dates=["date"])
+        raise
     return pd.read_csv(INTL_RESULTS_LOCAL, parse_dates=["date"])
 
 
