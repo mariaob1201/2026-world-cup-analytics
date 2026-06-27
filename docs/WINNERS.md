@@ -4,16 +4,16 @@ _A simple **Elo** model, conditioned on the **60 matches played so far** and the
 
 ## Next match day — who wins (Elo goals model)
 
-_Elo gap → two Poisson scoring rates → 1X2 + likely score. Date: **2026-06-26**._
+_Elo gap → two Poisson scoring rates → 1X2 + likely score. Date: **2026-06-27**._
 
 | Fixture | Elo | Pred goals | Likely | P(H/D/A) | **Pick** |
 |---|---|---|---|---|---|
-| Senegal v Iraq | 1455 v 1346 | 1.6-1.2 | 1-1 | 47%/25%/28% | **Senegal** (47%) |
-| Norway v France | 1528 v 1712 | 1.0-1.8 | 1-1 | 22%/23%/54% | **France** (54%) |
-| Uruguay v Spain | 1520 v 1706 | 1.0-1.8 | 1-1 | 22%/23%/54% | **Spain** (54%) |
-| New Zealand v Belgium | 1342 v 1539 | 1.0-1.8 | 1-1 | 21%/23%/56% | **Belgium** (56%) |
-| Egypt v Iran | 1535 v 1452 | 1.5-1.2 | 1-1 | 45%/25%/30% | **Egypt** (45%) |
-| Cape Verde v Saudi Arabia | 1461 v 1368 | 1.5-1.2 | 1-1 | 46%/25%/29% | **Cape Verde** (46%) |
+| Panama v England | 1350 v 1584 | 1.0-1.9 | 0-1 | 19%/22%/59% | **England** (59%) |
+| Algeria v Austria | 1536 v 1553 | 1.3-1.4 | 1-1 | 36%/26%/39% | **Austria** (39%) |
+| Jordan v Argentina | 1376 v 1717 | 0.8-2.2 | 0-2 | 13%/19%/69% | **Argentina** (69%) |
+| Colombia v Portugal | 1647 v 1704 | 1.2-1.5 | 1-1 | 32%/26%/42% | **Portugal** (42%) |
+| Congo DR v Uzbekistan | 1422 v 1415 | 1.4-1.3 | 1-1 | 38%/26%/36% | **Congo DR** (38%) |
+| Croatia v Ghana | 1524 v 1409 | 1.6-1.1 | 1-1 | 48%/25%/27% | **Croatia** (48%) |
 
 ## Champion scorecard — simulated from today's state
 
@@ -37,6 +37,28 @@ _8,000 Elo tournaments. Played group games are held fixed; the rest of the group
 | 14 | Ecuador | 57% | 30% | 17% | 8% | **3%** |
 | 15 | Ivory Coast | 54% | 28% | 15% | 7% | **3%** |
 | 16 | Austria | 46% | 24% | 11% | 6% | **2%** |
+
+## Track record — predicted vs true winners (out-of-sample)
+
+_Each WC match was predicted from Elo as it stood **before** that game (then the rating updated). Running accuracy: **58%** on 60 matches. Full log: `data/processed/winners_track.csv`._
+
+| Date | Fixture | Score | Predicted | Actual | ✓ |
+|---|---|---|---|---|:--:|
+| 2026-06-24 | Mexico v Czechia | 3-0 | Mexico | **Mexico** | ✅ |
+| 2026-06-24 | South Africa v South Korea | 1-0 | South Korea | **South Africa** | — |
+| 2026-06-24 | Canada v Switzerland | 1-2 | Canada | **Switzerland** | — |
+| 2026-06-24 | Bosnia-Herzegovina v Qatar | 3-1 | Bosnia-Herzegovina | **Bosnia-Herzegovina** | ✅ |
+| 2026-06-24 | Scotland v Brazil | 0-3 | Brazil | **Brazil** | ✅ |
+| 2026-06-24 | Morocco v Haiti | 4-2 | Morocco | **Morocco** | ✅ |
+| 2026-06-25 | United States v Türkiye | 2-3 | United States | **Türkiye** | — |
+| 2026-06-25 | Paraguay v Australia | 0-0 | Australia | **Draw** | — |
+| 2026-06-25 | Curaçao v Ivory Coast | 0-2 | Ivory Coast | **Ivory Coast** | ✅ |
+| 2026-06-25 | Ecuador v Germany | 2-1 | Germany | **Ecuador** | — |
+| 2026-06-25 | Japan v Sweden | 1-1 | Japan | **Draw** | — |
+| 2026-06-25 | Tunisia v Netherlands | 1-3 | Netherlands | **Netherlands** | ✅ |
+
+_Showing the latest 12 of 60. Elo hit-rate vs a coin-flip baseline is the honest scoreboard for these picks._
+
 
 ## Method (simple by design)
 

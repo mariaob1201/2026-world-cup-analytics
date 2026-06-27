@@ -24,11 +24,14 @@ from collections import defaultdict
 import numpy as np
 import pandas as pd
 
-from wc2026.config import ROOT, SEED, ensure_dirs
+from wc2026.config import PROCESSED, ROOT, SEED, ensure_dirs
 from wc2026.config import today as _today
 from wc2026.data.sources import build_real_matches, wc2026_matches
 from wc2026.data.teams import HOSTS, TEAMS, by_group
-from wc2026.models.elo import elo_lookup, run_elo, win_probability
+from wc2026.models.elo import (elo_lookup, rolling_backtest, run_elo,
+                               win_probability)
+
+TOURNAMENT_START = "2026-06-11"
 
 TODAY = _today()
 BASE_GOALS = 1.35   # league-average goals per side; Elo gap tilts it
@@ -58,7 +61,12 @@ def poisson_1x2(lam_a: float, lam_b: float, max_goals: int = 8) -> dict:
 # --- Part 1: next match-day winner picks (simple Elo model) ----------------
 def next_day_picks(elo: dict, rank: dict) -> pd.DataFrame:
     wc = wc2026_matches()
-    unplayed = wc[wc["home_score"].isna() & (wc["date"] >= TODAY)].sort_values("date")
+    # The "next match day" is the soonest fixture STRICTLY AFTER today — today's
+    # slate has already kicked off, so the next forecastable day is tomorrow+.
+    future = wc[wc["home_score"].isna() & (wc["date"] > TODAY)].sort_values("date")
+    # Fall back to any remaining unplayed (e.g. a delayed/late-listed today game).
+    unplayed = future if not future.empty else \
+        wc[wc["home_score"].isna() & (wc["date"] >= TODAY)].sort_values("date")
     if unplayed.empty:
         return pd.DataFrame()
     day = unplayed["date"].min()
@@ -180,11 +188,26 @@ def simulate_champion(elo: dict, groups: dict, played: dict, n_sims: int) -> pd.
     return df.sort_values("p_champion", ascending=False).reset_index(drop=True)
 
 
+def track_record() -> pd.DataFrame:
+    """Rolling out-of-sample predicted-vs-true winner log over WC 2026.
+
+    Elo is seeded on pre-tournament history; each WC match is predicted from
+    PRE-match ratings, then the rating updates with the real result. Persisted
+    to data/processed/winners_track.csv so the track accumulates over time.
+    """
+    history = build_real_matches(start="2022-01-01", end="2026-06-10")
+    wc_played = build_real_matches(start=TOURNAMENT_START, end=TODAY)
+    track = rolling_backtest(history, wc_played)
+    if not track.empty:
+        track.to_csv(PROCESSED / "winners_track.csv", index=False)
+    return track
+
+
 def _pct(x):
     return f"{100*x:.0f}%"
 
 
-def _render(picks, llm, sc, n_played, use_llm) -> str:
+def _render(picks, llm, sc, track, n_played, use_llm) -> str:
     L = [f"# 🔮 WC 2026 — Winners: next-day picks + champion scorecard\n",
          f"_A simple **Elo** model, conditioned on the **{n_played} matches played "
          f"so far** and the real 2026 bracket. Updated {TODAY}._\n"]
@@ -221,6 +244,22 @@ def _render(picks, llm, sc, n_played, use_llm) -> str:
     for i, r in enumerate(sc.head(16).itertuples(), 1):
         L.append(f"| {i} | {r.team} | {_pct(r.p_round16)} | {_pct(r.p_quarter)} | "
                  f"{_pct(r.p_semi)} | {_pct(r.p_final)} | **{_pct(r.p_champion)}** |")
+
+    if track is not None and not track.empty:
+        hit = track["hit"].mean()
+        n = len(track)
+        L.append("\n## Track record — predicted vs true winners (out-of-sample)\n")
+        L.append(f"_Each WC match was predicted from Elo as it stood **before** "
+                 f"that game (then the rating updated). Running accuracy: "
+                 f"**{_pct(hit)}** on {n} matches. Full log: "
+                 f"`data/processed/winners_track.csv`._\n")
+        L.append("| Date | Fixture | Score | Predicted | Actual | ✓ |")
+        L.append("|---|---|---|---|---|:--:|")
+        for r in track.tail(12).itertuples():   # most recent dozen
+            L.append(f"| {r.date} | {r.home} v {r.away} | {r.score} | "
+                     f"{r.pred} | **{r.actual}** | {'✅' if r.hit else '—'} |")
+        L.append(f"\n_Showing the latest 12 of {n}. Elo hit-rate vs a coin-flip "
+                 "baseline is the honest scoreboard for these picks._\n")
 
     L.append("\n## Method (simple by design)\n")
     L.append("- **Elo** is walked over all real results to today (recency- & "
@@ -259,13 +298,17 @@ def main() -> None:
     picks = next_day_picks(elo, rank)
     llm = llm_repredict(picks, elo, rank) if (args.llm and not picks.empty) else None
     sc = simulate_champion(elo, groups, played, args.sims)
+    track = track_record()
 
-    md = _render(picks, llm, sc, len(played), args.llm)
+    md = _render(picks, llm, sc, track, len(played), args.llm)
     out = ROOT / "docs" / "WINNERS.md"
     out.write_text(md)
 
+    if not track.empty:
+        print(f"Track record: predicted vs true on {len(track)} played WC "
+              f"matches — Elo hit-rate {100*track['hit'].mean():.0f}%")
     if not picks.empty:
-        print(f"Next match day ({picks.iloc[0]['date']}) — Elo picks:")
+        print(f"\nNext match day ({picks.iloc[0]['date']}) — Elo picks:")
         print(picks[["home", "away", "score", "pick", "conf"]].to_string(index=False))
     print(f"\nChampion scorecard (conditioned on {len(played)} played, "
           f"{args.sims:,} sims):")

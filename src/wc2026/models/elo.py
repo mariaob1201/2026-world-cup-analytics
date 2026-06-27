@@ -67,6 +67,24 @@ def _g_multiplier(goal_diff: int) -> float:
     return (11 + gd) / 8.0
 
 
+def _step(ratings: dict, games: dict, m, hfa: float) -> None:
+    """Apply one match's Elo update in place (shared by run_elo + backtest)."""
+    h, a = m.home_team, m.away_team
+    neutral = bool(getattr(m, "neutral", True))
+    adj = 0.0 if neutral else hfa
+    rh, ra = ratings.get(h, BASE_RATING), ratings.get(a, BASE_RATING)
+    e_home = 1.0 / (1.0 + 10 ** (-(rh + adj - ra) / 400.0))
+
+    gh, ga = int(m.home_goals), int(m.away_goals)
+    w_home = 1.0 if gh > ga else 0.0 if gh < ga else 0.5
+    k = _k_for(getattr(m, "tournament", "")) * _g_multiplier(gh - ga)
+    delta = k * (w_home - e_home)
+    ratings[h] = rh + delta
+    ratings[a] = ra - delta
+    games[h] = games.get(h, 0) + 1
+    games[a] = games.get(a, 0) + 1
+
+
 def run_elo(matches: pd.DataFrame, hfa: float = HFA) -> pd.DataFrame:
     """Walk matches in date order; return final ratings for our 48 teams.
 
@@ -75,37 +93,58 @@ def run_elo(matches: pd.DataFrame, hfa: float = HFA) -> pd.DataFrame:
     """
     ratings: dict[str, float] = {}
     games: dict[str, int] = {}
-
-    def R(team: str) -> float:
-        return ratings.get(team, BASE_RATING)
-
     df = matches.sort_values("date") if "date" in matches.columns else matches
     for m in df.itertuples():
-        h, a = m.home_team, m.away_team
-        neutral = bool(getattr(m, "neutral", True))
-        adj = 0.0 if neutral else hfa
-        e_home = 1.0 / (1.0 + 10 ** (-(R(h) + adj - R(a)) / 400.0))
+        _step(ratings, games, m, hfa)
 
-        gh, ga = int(m.home_goals), int(m.away_goals)
-        if gh > ga:
-            w_home = 1.0
-        elif gh < ga:
-            w_home = 0.0
-        else:
-            w_home = 0.5
-
-        k = _k_for(getattr(m, "tournament", "")) * _g_multiplier(gh - ga)
-        delta = k * (w_home - e_home)
-        ratings[h] = R(h) + delta
-        ratings[a] = R(a) - delta
-        games[h] = games.get(h, 0) + 1
-        games[a] = games.get(a, 0) + 1
-
-    rows = [{"team": t.name, "elo": round(R(t.name), 1), "games": games.get(t.name, 0)}
-            for t in TEAMS]
+    rows = [{"team": t.name, "elo": round(ratings.get(t.name, BASE_RATING), 1),
+             "games": games.get(t.name, 0)} for t in TEAMS]
     out = pd.DataFrame(rows).sort_values("elo", ascending=False).reset_index(drop=True)
     out["rank"] = range(1, len(out) + 1)
     return out
+
+
+def _elo_1x2(rh: float, ra: float, neutral: bool, hfa: float) -> tuple[float, float, float]:
+    """1X2 from an Elo gap; draw mass peaks for evenly-matched sides."""
+    adj = 0.0 if neutral else hfa
+    p_home_raw = 1.0 / (1.0 + 10 ** (-(rh + adj - ra) / 400.0))
+    draw = 0.10 + 0.22 * (1 - abs(p_home_raw - 0.5) * 2)
+    return p_home_raw * (1 - draw), draw, (1 - p_home_raw) * (1 - draw)
+
+
+def rolling_backtest(history: pd.DataFrame, targets: pd.DataFrame,
+                     hfa: float = HFA) -> pd.DataFrame:
+    """Out-of-sample predicted-vs-true track.
+
+    Seed Elo on ``history``, then walk ``targets`` in date order: predict each
+    match from PRE-match ratings (never seeing the result first), record the
+    predicted vs actual winner, THEN update with the real score. Returns a
+    DataFrame: date, home, away, p_home/p_draw/p_away, pred, actual, hit.
+    """
+    ratings: dict[str, float] = {}
+    games: dict[str, int] = {}
+    if "date" in history.columns:
+        history = history.sort_values("date")
+    for m in history.itertuples():
+        _step(ratings, games, m, hfa)
+
+    tg = targets.sort_values("date") if "date" in targets.columns else targets
+    rows = []
+    for m in tg.itertuples():
+        h, a = m.home_team, m.away_team
+        neutral = bool(getattr(m, "neutral", True))
+        rh, ra = ratings.get(h, BASE_RATING), ratings.get(a, BASE_RATING)
+        pH, pD, pA = _elo_1x2(rh, ra, neutral, hfa)
+        gh, ga = int(m.home_goals), int(m.away_goals)
+        actual = h if gh > ga else a if ga > gh else "Draw"
+        pred = max([(h, pH), ("Draw", pD), (a, pA)], key=lambda t: t[1])[0]
+        rows.append({"date": str(getattr(m, "date", "")).split()[0],
+                     "home": h, "away": a, "score": f"{gh}-{ga}",
+                     "p_home": round(pH, 3), "p_draw": round(pD, 3),
+                     "p_away": round(pA, 3), "pred": pred, "actual": actual,
+                     "hit": pred == actual})
+        _step(ratings, games, m, hfa)
+    return pd.DataFrame(rows)
 
 
 def win_probability(elo_a: float, elo_b: float, neutral: bool = True) -> float:
