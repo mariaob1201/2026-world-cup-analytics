@@ -52,7 +52,7 @@ jobs:
           pip install -r requirements.txt
           pip install -e .
 
-      - name: Refresh tracker (pull results -> refit -> forecast -> log)
+      - name: Refresh everything (results -> refit -> player/team tables -> winners + forecasts -> trackers -> timeline -> log)
         # LLM keys are optional: either enables the judge/extractor (OpenAI or
         # Claude); the pipeline runs on deterministic fallbacks without them.
         env:
@@ -60,10 +60,12 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: make daily PY=python   # deps are installed into the runner's Python
 
-      - name: Commit refreshed forecasts
+      - name: Commit refreshed tables, forecasts & charts
         run: |
           git config user.name  "tracker-bot"
           git config user.email "tracker-bot@users.noreply.github.com"
+          # docs/ (WINNERS, CHAMPION_TRACKER, ...), charts, and the data/processed
+          # CSVs (wc2026_players, wc2026_team_assessment, winners_track, timeline).
           git add docs/ artifacts/*.png data/processed/*.csv
           git commit -m "tracker: daily refresh $(date -u +%F)" || echo "no changes"
           git push

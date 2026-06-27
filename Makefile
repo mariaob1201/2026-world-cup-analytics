@@ -105,8 +105,9 @@ xg-backtest:
 	$(PY) scripts/21_xg_backtest.py $(ARGS)
 
 # The full daily refresh (used by the GitHub Action): real squads + live results
-# -> refit -> backtest/forecast -> tracker -> forecast-vs-truth log.
-daily: real-players live-squads live-features real-fit elo track champion timeline prediction-log
+# -> refit -> player/team tables -> winners + backtest/forecast -> trackers ->
+# title-odds timeline -> forecast-vs-truth log.
+daily: real-players live-squads live-features real-fit elo dataset winners track champion timeline prediction-log
 
 # Backtest + forecast, then tracking charts/sentiment/tactics. Re-run each matchday.
 track:
