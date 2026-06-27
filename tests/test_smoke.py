@@ -389,3 +389,29 @@ def test_model_fits_tiny():
                    team_to_idx={t: i for i, t in enumerate(teams)})
     strength = posterior_strength_table(fr)
     assert len(strength) == 48
+
+
+def test_winners_elo_goals_and_sim():
+    """Stage 28: Elo goals model + state-conditioned champion simulation."""
+    import importlib.util
+    from pathlib import Path
+
+    spec = importlib.util.spec_from_file_location(
+        "predict_winners", Path(__file__).parent.parent / "scripts" / "28_predict_winners.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    # Stronger Elo -> higher scoring rate and higher win probability.
+    la, lb = mod.elo_goals(1800, 1500, neutral=True)
+    assert la > lb > 0
+    p = mod.poisson_1x2(la, lb)
+    assert p["p_a"] > p["p_b"]
+    assert abs(p["p_a"] + p["p_draw"] + p["p_b"] - 1.0) < 1e-2  # 8-goal truncation
+
+    # Tiny champion sim over two groups; probabilities are well-formed.
+    groups = {"A": ["T0", "T1", "T2", "T3"], "B": ["T4", "T5", "T6", "T7"]}
+    elo = {f"T{i}": 1500 + (8 - i) * 40 for i in range(8)}
+    sc = mod.simulate_champion(elo, groups, played={}, n_sims=200)
+    assert len(sc) == 8
+    assert abs(sc["p_champion"].sum() - 1.0) < 1e-6
+    assert (sc["p_round16"] <= 1.0).all() and (sc["p_round16"] >= 0.0).all()

@@ -90,6 +90,11 @@ sbi-demo:
 dataset:
 	$(PY) scripts/27_build_player_dataset.py
 
+# Winners: next-day match picks + Elo champion scorecard (state-conditioned).
+# `make winners ARGS=--llm` adds the LLM-as-a-Judge overlay on the next day.
+winners:
+	$(PY) scripts/28_predict_winners.py $(ARGS)
+
 # Backtest the xG model vs the goals model (run `make fetch-xg` first;
 # `make xg-backtest ARGS=--demo` runs a synthetic sanity check instead).
 xg-backtest:
