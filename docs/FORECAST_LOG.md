@@ -1,13 +1,13 @@
 # 📒 Forecast Log — Predictions vs Ground Truth
 
-_A growing, append-on-result ledger: every goal forecast and how it turned out. Updated by the daily GitHub Action. Compiled 2026-06-28._
+_A growing, append-on-result ledger: every goal forecast and how it turned out. Updated by the daily GitHub Action. Compiled 2026-06-29._
 
 ## Running accuracy (resolved matches)
 
-- **Matches scored:** 72
-- **Outcome hit-rate:** 62%
-- **Goal-total MAE:** 1.533 goals/match
-- **RPS:** 0.1591 · **log-loss:** 0.8729 (lower better)
+- **Matches scored:** 73
+- **Outcome hit-rate:** 63%
+- **Goal-total MAE:** 1.522 goals/match
+- **RPS:** 0.1601 · **log-loss:** 0.8739 (lower better)
 
 ## Resolved — forecast vs actual
 
@@ -85,12 +85,12 @@ _A growing, append-on-result ledger: every goal forecast and how it turned out. 
 | 2026-06-27 | Congo DR v Uzbekistan | 1.0-0.8 | 0-0 | **3-1** | ✅ |
 | 2026-06-27 | Panama v England | 0.6-2.0 | 0-1 | **0-2** | ✅ |
 | 2026-06-27 | Croatia v Ghana | 1.9-0.8 | 1-0 | **2-1** | ✅ |
+| 2026-06-28 | South Africa v Canada | 0.8-1.0 | 0-0 | **0-1** | ✅ |
 
 ## Pending — forecasts awaiting kickoff
 
 | Date | Fixture | Forecast (xG) | Likely | P(H/D/A) |
 |---|---|---|---|---|
-| 2026-06-28 | South Africa v Canada | 0.7-1.1 | 0-1 | 25%/32%/43% |
 | 2026-06-29 | Germany v Paraguay | 1.9-1.0 | 1-0 | 58%/23%/20% |
 | 2026-06-29 | Netherlands v Morocco | 1.4-1.2 | 1-1 | 39%/26%/34% |
 | 2026-06-29 | Brazil v Japan | 1.8-1.1 | 1-1 | 51%/24%/25% |
@@ -103,5 +103,8 @@ _A growing, append-on-result ledger: every goal forecast and how it turned out. 
 | 2026-07-02 | Spain v Austria | 1.6-1.2 | 1-1 | 48%/24%/28% |
 | 2026-07-02 | Portugal v Croatia | 1.5-0.9 | 1-0 | 51%/26%/22% |
 | 2026-07-02 | Switzerland v Algeria | 1.5-1.3 | 1-1 | 41%/25%/34% |
+| 2026-07-03 | Argentina v Cape Verde | 2.4-0.6 | 2-0 | 77%/15%/7% |
+| 2026-07-03 | Australia v Egypt | 1.1-0.9 | 1-0 | 40%/31%/29% |
+| 2026-07-03 | Colombia v Ghana | 2.2-0.6 | 2-0 | 72%/18%/10% |
 
 _Ground truth comes from the live results feed; the daily Action fills `actual` once each match is played and rolls the accuracy forward. See [LIVE_PIPELINE.md](LIVE_PIPELINE.md)._

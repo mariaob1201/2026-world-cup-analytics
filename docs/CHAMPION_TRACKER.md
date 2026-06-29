@@ -1,6 +1,6 @@
 # 🏆 World Cup 2026 — Champion Tracker
 
-_A living, state-aware forecast. Conditioned on the **72 matches played so far**: completed group games are held fixed; the rest of the tournament is simulated from a Bayesian goals model (squad-skill prior + current form + X/ESPN sentiment). Updated 2026-06-28._
+_A living, state-aware forecast. Conditioned on the **73 matches played so far**: completed group games are held fixed; the rest of the tournament is simulated from a Bayesian goals model (squad-skill prior + current form + X/ESPN sentiment). Updated 2026-06-29._
 
 ## How to read this
 
@@ -15,18 +15,18 @@ Both come from one model: goals are the primitive; the winner is a simulation ov
 
 | Team | Quarter | Semi | Final | **Champion** |
 |---|---|---|---|---|
-| Argentina | 49% | 27% | 17% | **12%** |
-| France | 48% | 26% | 16% | **11%** |
-| Portugal | 46% | 25% | 15% | **11%** |
-| Belgium | 44% | 23% | 12% | **7%** |
-| Brazil | 44% | 22% | 10% | **6%** |
-| Colombia | 42% | 22% | 11% | **6%** |
-| Spain | 42% | 22% | 11% | **6%** |
-| Germany | 37% | 20% | 10% | **4%** |
-| Morocco | 32% | 17% | 8% | **4%** |
-| England | 30% | 15% | 8% | **3%** |
-| Netherlands | 32% | 17% | 8% | **3%** |
-| Switzerland | 31% | 16% | 7% | **3%** |
+| Argentina | 48% | 27% | 16% | **12%** |
+| Portugal | 48% | 26% | 16% | **11%** |
+| France | 48% | 26% | 15% | **11%** |
+| Brazil | 45% | 23% | 11% | **7%** |
+| Spain | 43% | 22% | 12% | **7%** |
+| Belgium | 43% | 22% | 11% | **7%** |
+| Colombia | 41% | 21% | 10% | **6%** |
+| Germany | 37% | 19% | 10% | **4%** |
+| Netherlands | 33% | 17% | 8% | **3%** |
+| Morocco | 31% | 16% | 8% | **3%** |
+| Japan | 33% | 17% | 8% | **3%** |
+| England | 30% | 16% | 8% | **3%** |
 
 _Mexico's Round-of-32 opponent odds (per candidate): [R32_ODDS.md](R32_ODDS.md) — `make r32-odds`._
 
@@ -42,19 +42,21 @@ _How each contender's championship probability moved as matches were played. The
 
 | Date | Fixture | Pred goals (xG) | Likely | P(H/D/A) | Home form |
 |---|---|---|---|---|---|
-| 2026-06-28 | South Africa v Canada | 0.7-1.0 | 0-0 | 25%/33%/42% | steady |
 | 2026-06-29 | Germany v Paraguay | 1.9-1.0 | 1-0 | 58%/22%/20% | red-hot |
 | 2026-06-29 | Netherlands v Morocco | 1.5-1.4 | 1-1 | 38%/24%/37% | rising |
-| 2026-06-29 | Brazil v Japan | 1.7-1.2 | 1-1 | 48%/23%/28% | red-hot |
+| 2026-06-29 | Brazil v Japan | 1.8-1.2 | 1-1 | 49%/23%/28% | red-hot |
 | 2026-06-30 | Ivory Coast v Norway | 1.5-1.0 | 1-0 | 48%/26%/26% | rising |
 | 2026-06-30 | France v Sweden | 3.3-0.9 | 3-0 | 82%/11%/7% | red-hot |
 | 2026-06-30 | Mexico v Ecuador | 0.8-0.7 | 0-0 | 35%/36%/29% | rising |
 | 2026-07-01 | England v Congo DR | 1.2-0.9 | 1-0 | 44%/29%/27% | rising |
 | 2026-07-01 | Belgium v Senegal | 2.2-1.1 | 2-1 | 62%/19%/19% | red-hot |
-| 2026-07-01 | United States v Bosnia-Herzegovina | 2.3-1.2 | 2-1 | 62%/19%/20% | steady |
+| 2026-07-01 | United States v Bosnia-Herzegovina | 2.3-1.2 | 2-1 | 62%/19%/19% | steady |
 | 2026-07-02 | Spain v Austria | 1.8-1.2 | 1-1 | 51%/23%/26% | rising |
 | 2026-07-02 | Portugal v Croatia | 1.7-0.8 | 1-0 | 59%/24%/17% | red-hot |
 | 2026-07-02 | Switzerland v Algeria | 1.7-1.3 | 1-1 | 47%/24%/29% | rising |
+| 2026-07-03 | Argentina v Cape Verde | 1.9-0.6 | 1-0 | 67%/21%/12% | red-hot |
+| 2026-07-03 | Australia v Egypt | 0.9-1.0 | 0-0 | 34%/32%/35% | steady |
+| 2026-07-03 | Colombia v Ghana | 2.0-0.5 | 1-0 | 73%/19%/9% | rising |
 
 ## Current group standings (played)
 
@@ -63,6 +65,7 @@ _How each contender's championship probability moved as matches were played. The
 | France | 3 | 9 | +8 |
 | Argentina | 3 | 9 | +7 |
 | Mexico | 3 | 9 | +6 |
+| Canada | 4 | 7 | +6 |
 | Brazil | 3 | 7 | +6 |
 | Netherlands | 3 | 7 | +6 |
 | Spain | 3 | 7 | +5 |
@@ -79,15 +82,14 @@ _How each contender's championship probability moved as matches were played. The
 | Japan | 3 | 5 | +4 |
 | Belgium | 3 | 5 | +4 |
 | Egypt | 3 | 5 | +2 |
-| Canada | 3 | 4 | +5 |
 | Congo DR | 3 | 4 | +1 |
 | Australia | 3 | 4 | +0 |
 | Ecuador | 3 | 4 | +0 |
 | Sweden | 3 | 4 | +0 |
 | Austria | 3 | 4 | +0 |
 | Ghana | 3 | 4 | +0 |
-| South Africa | 3 | 4 | -1 |
 | Bosnia-Herzegovina | 3 | 4 | -1 |
+| South Africa | 4 | 4 | -2 |
 | Paraguay | 3 | 4 | -2 |
 | Algeria | 3 | 4 | -2 |
 | Senegal | 3 | 3 | +2 |

@@ -1,6 +1,6 @@
 # WC 2026 — Tracking Analytics, Sentiment & Tactics
 
-_Run after each matchday to track model calibration and read the next slate. Charts in `artifacts/`. Compiled 2026-06-28._
+_Run after each matchday to track model calibration and read the next slate. Charts in `artifacts/`. Compiled 2026-06-29._
 
 ## Tracking charts
 
@@ -12,13 +12,12 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 - **Predicted vs actual goals** (`artifacts/goals_pred_vs_actual.png`) — scatter of expected vs real total goals per played match.
 - **Forecast win/draw/win** (`artifacts/forecast_probs.png`) — stacked 1X2 bars for upcoming fixtures.
 
-**Tracking metrics (72 matches):** outcome hit-rate 62% · total-goals MAE 1.53. Re-run to update as results come in.
+**Tracking metrics (73 matches):** outcome hit-rate 63% · total-goals MAE 1.52. Re-run to update as results come in.
 
 ## Match sentiment & momentum (next fixtures)
 
 | Fixture | Home form | Away form | Momentum edge |
 |---|---|---|---|
-| South Africa v Canada | steady (-0.03) | rising (+0.11) | **Canada** |
 | Germany v Paraguay | red-hot (+0.13) | steady (-0.05) | **Germany** |
 | Netherlands v Morocco | rising (+0.10) | rising (+0.09) | **even** |
 | Brazil v Japan | red-hot (+0.16) | rising (+0.10) | **Brazil** |
@@ -31,12 +30,11 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 | Spain v Austria | rising (+0.11) | rising (+0.07) | **Spain** |
 | Portugal v Croatia | red-hot (+0.13) | steady (-0.03) | **Portugal** |
 | Switzerland v Algeria | rising (+0.11) | steady (+0.01) | **Switzerland** |
+| Argentina v Cape Verde | red-hot (+0.18) | steady (+0.00) | **Argentina** |
+| Australia v Egypt | steady (+0.02) | steady (+0.03) | **even** |
+| Colombia v Ghana | rising (+0.07) | dipping (-0.09) | **Colombia** |
 
 ## Tactical read (next fixtures)
-
-**South Africa v Canada** — best shapes 3-4-3 vs 3-4-3.
-  - Defence: away edge (70 vs 73) · Midfield: away edge (70 vs 74) · Attack: away edge (73 vs 75)
-  - away controls midfield; home built around its attack, away around its attack.
 
 **Germany v Paraguay** — best shapes 4-2-3-1 vs 4-2-3-1.
   - Defence: home edge (84 vs 74) · Midfield: home edge (88 vs 76) · Attack: home edge (82 vs 74)
@@ -85,6 +83,18 @@ _Run after each matchday to track model calibration and read the next slate. Cha
 **Switzerland v Algeria** — best shapes 3-5-2 vs 4-4-2.
   - Defence: even (78 vs 78) · Midfield: home edge (79 vs 78) · Attack: away edge (78 vs 81)
   - midfield finely balanced; home built around its midfield, away around its attack.
+
+**Argentina v Cape Verde** — best shapes 4-3-3 vs 4-3-3.
+  - Defence: home edge (82 vs 70) · Midfield: home edge (82 vs 70) · Attack: home edge (89 vs 76)
+  - home controls midfield; home built around its attack, away around its attack.
+
+**Australia v Egypt** — best shapes 4-4-2 vs 3-4-3.
+  - Defence: home edge (72 vs 70) · Midfield: home edge (74 vs 72) · Attack: away edge (72 vs 79)
+  - home controls midfield; home built around its midfield, away around its attack.
+
+**Colombia v Ghana** — best shapes 4-3-3 vs 3-5-2.
+  - Defence: home edge (80 vs 76) · Midfield: even (79 vs 78) · Attack: home edge (82 vs 76)
+  - midfield finely balanced; home built around its attack, away around its midfield.
 
 ## Keep working on it
 

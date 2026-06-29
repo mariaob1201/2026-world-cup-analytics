@@ -71,3 +71,4 @@ date,home,away,pred_xg,pred_score,p_H,p_D,p_A,actual,result,pred_result,hit,p_ac
 2026-06-27,Congo DR,Uzbekistan,1.0-0.8,0-0,0.408,0.328,0.264,3-1,H,H,True,0.408,1.77,4
 2026-06-27,Panama,England,0.6-2.0,0-1,0.107,0.196,0.697,0-2,A,A,True,0.697,2.6199999999999997,2
 2026-06-27,Croatia,Ghana,1.9-0.8,1-0,0.63,0.221,0.15,2-1,H,H,True,0.63,2.6,3
+2026-06-28,South Africa,Canada,0.8-1.0,0-0,0.277,0.336,0.388,0-1,A,A,True,0.388,1.72,1

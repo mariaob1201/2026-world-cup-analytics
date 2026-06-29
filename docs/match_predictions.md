@@ -1,13 +1,13 @@
 # WC 2026 — Match Predictions vs Reality, and Forecasts
 
-_Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad prior). Backtest compares those out-of-sample forecasts to the actual scorelines; forecasts cover the next slate. Compiled 2026-06-28._
+_Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad prior). Backtest compares those out-of-sample forecasts to the actual scorelines; forecasts cover the next slate. Compiled 2026-06-29._
 
 ## Accuracy so far (out-of-sample)
 
-- **Matches scored:** 72
-- **Outcome hit-rate:** 62% (predicted W/D/L matched actual)
+- **Matches scored:** 73
+- **Outcome hit-rate:** 63% (predicted W/D/L matched actual)
 - **Mean probability on the actual outcome:** 0.45 · **Brier score:** 0.517 (lower is better)
-- **Total-goals mean abs error:** 1.53 goals/match
+- **Total-goals mean abs error:** 1.52 goals/match
 
 > Read these as a small-sample sanity check (one matchday), not a verdict. Blowouts like Germany 7-1 and Canada 6-0 inflate the goals error — the model is calibrated to typical scorelines, not outliers.
 
@@ -87,6 +87,7 @@ _Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad p
 | 2026-06-27 | Congo DR v Uzbekistan | 1.0-0.8 | 0-0 | 41%/33%/26% | **3-1** | ✅ |
 | 2026-06-27 | Panama v England | 0.6-2.0 | 0-1 | 11%/20%/70% | **0-2** | ✅ |
 | 2026-06-27 | Croatia v Ghana | 1.9-0.8 | 1-0 | 63%/22%/15% | **2-1** | ✅ |
+| 2026-06-28 | South Africa v Canada | 0.8-1.0 | 0-0 | 28%/34%/39% | **0-1** | ✅ |
 
 ## Forecast — next fixtures (with momentum nudge)
 
@@ -94,7 +95,6 @@ _`Mom` = recency-weighted form (+ scouted sentiment) applied as a small, capped 
 
 | Date | Fixture | Pred xG | Likely | P(H/D/A) | Over 2.5 | Mom H/A |
 |---|---|---|---|---|---|---|
-| 2026-06-28 | South Africa v Canada | 0.7-1.1 | 0-1 | 25%/32%/43% | 27% | -0.03/+0.11 |
 | 2026-06-29 | Germany v Paraguay | 1.9-1.0 | 1-0 | 58%/23%/20% | 53% | +0.13/-0.05 |
 | 2026-06-29 | Netherlands v Morocco | 1.4-1.2 | 1-1 | 39%/26%/34% | 48% | +0.10/+0.09 |
 | 2026-06-29 | Brazil v Japan | 1.8-1.1 | 1-1 | 51%/24%/25% | 55% | +0.16/+0.10 |
@@ -107,6 +107,9 @@ _`Mom` = recency-weighted form (+ scouted sentiment) applied as a small, capped 
 | 2026-07-02 | Spain v Austria | 1.6-1.2 | 1-1 | 48%/24%/28% | 52% | +0.11/+0.07 |
 | 2026-07-02 | Portugal v Croatia | 1.5-0.9 | 1-0 | 51%/26%/22% | 41% | +0.13/-0.03 |
 | 2026-07-02 | Switzerland v Algeria | 1.5-1.3 | 1-1 | 41%/25%/34% | 52% | +0.11/+0.01 |
+| 2026-07-03 | Argentina v Cape Verde | 2.4-0.6 | 2-0 | 77%/15%/7% | 56% | +0.18/+0.00 |
+| 2026-07-03 | Australia v Egypt | 1.1-0.9 | 1-0 | 40%/31%/29% | 31% | +0.02/+0.03 |
+| 2026-07-03 | Colombia v Ghana | 2.2-0.6 | 2-0 | 72%/18%/10% | 52% | +0.07/-0.09 |
 
 ## Squad & player context (forecast teams)
 
@@ -114,7 +117,6 @@ _From real player data: squad rating, average age (seniority), stylistic tilt, a
 
 | Team | Tier | Squad ovr | Avg age | Style | Talisman |
 |---|---|---|---|---|---|
-| South Africa | Developing team | 70.8 | 28.4 | well-balanced | L. Singh |
 | Germany | Elite contender | 85.9 | 28.6 | attack-leaning | J. Kimmich |
 | Netherlands | Elite contender | 83.0 | 27.4 | well-balanced | V. van Dijk |
 | Brazil | Elite contender | 85.4 | 29.9 | well-balanced | Neymar Jr |
@@ -127,7 +129,9 @@ _From real player data: squad rating, average age (seniority), stylistic tilt, a
 | Spain | Elite contender | 85.5 | 30.4 | well-balanced | Sergio Ramos |
 | Portugal | Elite contender | 84.2 | 27.6 | attack-leaning | Cristiano Ronaldo |
 | Switzerland | Strong side | 79.1 | 27.2 | well-balanced | R. Freuler |
-| Canada | Developing team | 73.6 | 27.9 | well-balanced | A. Davies |
+| Argentina | Elite contender | 84.4 | 29.0 | attack-leaning | L. Messi |
+| Australia | Developing team | 72.8 | 29.2 | well-balanced | A. Mooy |
+| Colombia | Strong side | 79.4 | 29.3 | attack-leaning | J. Cuadrado |
 | Paraguay | Developing team | 74.8 | 29.2 | attack-leaning | C. Ortiz |
 | Morocco | Strong side | 79.2 | 28.8 | well-balanced | A. Hakimi |
 | Japan | Developing team | 75.5 | 28.2 | attack-leaning | D. Kamada |
@@ -140,6 +144,9 @@ _From real player data: squad rating, average age (seniority), stylistic tilt, a
 | Austria | Solid outfit | 78.9 | 27.8 | well-balanced | D. Alaba |
 | Croatia | Strong side | 80.6 | 28.2 | attack-leaning | L. Modrić |
 | Algeria | Solid outfit | 77.9 | 27.9 | attack-leaning | R. Mahrez |
+| Cape Verde | Developing team | 70.8 | 27.9 | attack-leaning | Jovane Cabral |
+| Egypt | Developing team | 72.2 | 25.6 | attack-leaning | M. Salah |
+| Ghana | Developing team | 75.8 | 27.0 | well-balanced | T. Partey |
 
 ## Notes on method
 
