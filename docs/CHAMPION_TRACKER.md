@@ -1,6 +1,6 @@
 # 🏆 World Cup 2026 — Champion Tracker
 
-_A living, state-aware forecast. Conditioned on the **76 matches played so far**: completed group games are held fixed; the rest of the tournament is simulated from a Bayesian goals model (squad-skill prior + current form + X/ESPN sentiment). Updated 2026-06-30._
+_A living, state-aware forecast. Conditioned on the **79 matches played so far**: completed group games are held fixed; the rest of the tournament is simulated from a Bayesian goals model (squad-skill prior + current form + X/ESPN sentiment). Updated 2026-07-01._
 
 ## How to read this
 
@@ -15,18 +15,18 @@ Both come from one model: goals are the primitive; the winner is a simulation ov
 
 | Team | Quarter | Semi | Final | **Champion** |
 |---|---|---|---|---|
-| Argentina | 49% | 27% | 17% | **12%** |
-| Portugal | 47% | 26% | 16% | **12%** |
-| France | 48% | 26% | 15% | **11%** |
-| Belgium | 44% | 23% | 12% | **8%** |
-| Spain | 43% | 22% | 11% | **7%** |
-| Brazil | 44% | 23% | 11% | **7%** |
+| France | 48% | 27% | 16% | **12%** |
+| Argentina | 48% | 27% | 16% | **11%** |
+| Portugal | 47% | 26% | 15% | **11%** |
+| Brazil | 44% | 22% | 11% | **7%** |
+| Belgium | 44% | 23% | 11% | **7%** |
+| Spain | 43% | 23% | 11% | **6%** |
 | Colombia | 40% | 21% | 10% | **6%** |
-| Germany | 37% | 19% | 10% | **4%** |
-| England | 31% | 16% | 8% | **3%** |
-| Japan | 30% | 16% | 8% | **3%** |
-| Morocco | 30% | 16% | 7% | **3%** |
-| Ivory Coast | 29% | 15% | 8% | **3%** |
+| Germany | 36% | 19% | 9% | **4%** |
+| Netherlands | 31% | 17% | 9% | **3%** |
+| Japan | 31% | 16% | 8% | **3%** |
+| Switzerland | 31% | 16% | 9% | **3%** |
+| Morocco | 32% | 17% | 8% | **3%** |
 
 _Mexico's Round-of-32 opponent odds (per candidate): [R32_ODDS.md](R32_ODDS.md) — `make r32-odds`._
 
@@ -42,28 +42,28 @@ _How each contender's championship probability moved as matches were played. The
 
 | Date | Fixture | Pred goals (xG) | Likely | P(H/D/A) | Home form |
 |---|---|---|---|---|---|
-| 2026-06-30 | Ivory Coast v Norway | 1.5-1.0 | 1-0 | 48%/26%/26% | rising |
-| 2026-06-30 | France v Sweden | 3.3-0.9 | 3-0 | 82%/11%/7% | red-hot |
-| 2026-06-30 | Mexico v Ecuador | 0.8-0.7 | 0-0 | 35%/36%/29% | rising |
+| 2026-07-01 | United States v Bosnia-Herzegovina | 2.3-1.2 | 2-1 | 62%/19%/19% | steady |
+| 2026-07-01 | Belgium v Senegal | 2.3-1.2 | 2-1 | 62%/19%/19% | red-hot |
 | 2026-07-01 | England v Congo DR | 1.2-0.9 | 1-0 | 44%/29%/27% | rising |
-| 2026-07-01 | Belgium v Senegal | 2.3-1.1 | 2-1 | 62%/19%/19% | red-hot |
-| 2026-07-01 | United States v Bosnia-Herzegovina | 2.4-1.2 | 2-1 | 62%/19%/19% | steady |
-| 2026-07-02 | Switzerland v Algeria | 1.7-1.3 | 1-1 | 47%/24%/29% | rising |
-| 2026-07-02 | Spain v Austria | 1.9-1.2 | 1-1 | 51%/23%/26% | rising |
+| 2026-07-02 | Spain v Austria | 1.9-1.3 | 1-1 | 51%/22%/27% | rising |
 | 2026-07-02 | Portugal v Croatia | 1.7-0.8 | 1-0 | 59%/24%/17% | red-hot |
+| 2026-07-02 | Switzerland v Algeria | 1.7-1.3 | 1-1 | 48%/23%/29% | rising |
+| 2026-07-03 | Australia v Egypt | 0.9-1.0 | 0-0 | 34%/32%/35% | steady |
 | 2026-07-03 | Argentina v Cape Verde | 1.9-0.6 | 1-0 | 67%/21%/12% | red-hot |
-| 2026-07-03 | Colombia v Ghana | 2.0-0.5 | 1-0 | 73%/19%/8% | rising |
-| 2026-07-03 | Australia v Egypt | 0.9-1.0 | 0-0 | 34%/31%/35% | steady |
+| 2026-07-03 | Colombia v Ghana | 2.0-0.5 | 1-0 | 72%/19%/9% | rising |
 | 2026-07-04 | Canada v Morocco | 1.0-1.1 | 0-1 | 32%/30%/38% | rising |
+| 2026-07-04 | Paraguay v France | 0.7-1.9 | 0-1 | 13%/21%/66% | steady |
+| 2026-07-05 | Brazil v Norway | 2.5-1.2 | 2-1 | 65%/18%/17% | red-hot |
 
 ## Current group standings (played)
 
 | Team | P | Pts | GD |
 |---|---|---|---|
+| France | 4 | 12 | +11 |
+| Mexico | 4 | 12 | +8 |
 | Brazil | 4 | 10 | +7 |
-| France | 3 | 9 | +8 |
 | Argentina | 3 | 9 | +7 |
-| Mexico | 3 | 9 | +6 |
+| Norway | 4 | 9 | +2 |
 | Netherlands | 4 | 8 | +6 |
 | Morocco | 4 | 8 | +3 |
 | Canada | 4 | 7 | +6 |
@@ -73,8 +73,7 @@ _How each contender's championship probability moved as matches were played. The
 | England | 3 | 7 | +4 |
 | Colombia | 3 | 7 | +3 |
 | United States | 3 | 6 | +4 |
-| Ivory Coast | 3 | 6 | +2 |
-| Norway | 3 | 6 | +1 |
+| Ivory Coast | 4 | 6 | +1 |
 | Croatia | 3 | 6 | +0 |
 | Portugal | 3 | 5 | +5 |
 | Belgium | 3 | 5 | +4 |
@@ -83,13 +82,13 @@ _How each contender's championship probability moved as matches were played. The
 | Paraguay | 4 | 5 | -2 |
 | Congo DR | 3 | 4 | +1 |
 | Australia | 3 | 4 | +0 |
-| Ecuador | 3 | 4 | +0 |
-| Sweden | 3 | 4 | +0 |
 | Austria | 3 | 4 | +0 |
 | Ghana | 3 | 4 | +0 |
 | Bosnia-Herzegovina | 3 | 4 | -1 |
 | South Africa | 4 | 4 | -2 |
+| Ecuador | 4 | 4 | -2 |
 | Algeria | 3 | 4 | -2 |
+| Sweden | 4 | 4 | -3 |
 | Senegal | 3 | 3 | +2 |
 | Iran | 3 | 3 | +0 |
 | Cape Verde | 3 | 3 | +0 |

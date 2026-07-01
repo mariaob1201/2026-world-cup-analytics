@@ -1,13 +1,13 @@
 # WC 2026 — Match Predictions vs Reality, and Forecasts
 
-_Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad prior). Backtest compares those out-of-sample forecasts to the actual scorelines; forecasts cover the next slate. Compiled 2026-06-30._
+_Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad prior). Backtest compares those out-of-sample forecasts to the actual scorelines; forecasts cover the next slate. Compiled 2026-07-01._
 
 ## Accuracy so far (out-of-sample)
 
-- **Matches scored:** 76
+- **Matches scored:** 79
 - **Outcome hit-rate:** 62% (predicted W/D/L matched actual)
-- **Mean probability on the actual outcome:** 0.45 · **Brier score:** 0.524 (lower is better)
-- **Total-goals mean abs error:** 1.48 goals/match
+- **Mean probability on the actual outcome:** 0.45 · **Brier score:** 0.523 (lower is better)
+- **Total-goals mean abs error:** 1.44 goals/match
 
 > Read these as a small-sample sanity check (one matchday), not a verdict. Blowouts like Germany 7-1 and Canada 6-0 inflate the goals error — the model is calibrated to typical scorelines, not outliers.
 
@@ -61,36 +61,39 @@ _Model trained on pre-tournament data only (results to 2026-06-10 + FIFA squad p
 | 2026-06-22 | Jordan v Algeria | 0.6-1.9 | 0-1 | 12%/21%/66% | **1-2** | ✅ |
 | 2026-06-23 | Panama v Croatia | 0.6-1.8 | 0-1 | 11%/22%/67% | **0-1** | ✅ |
 | 2026-06-23 | England v Ghana | 2.1-0.8 | 2-0 | 66%/20%/15% | **0-0** | — |
-| 2026-06-23 | Portugal v Uzbekistan | 1.8-0.5 | 1-0 | 69%/21%/9% | **5-0** | ✅ |
 | 2026-06-23 | Colombia v Congo DR | 1.5-0.7 | 1-0 | 57%/26%/17% | **1-0** | ✅ |
+| 2026-06-23 | Portugal v Uzbekistan | 1.8-0.5 | 1-0 | 69%/21%/9% | **5-0** | ✅ |
 | 2026-06-24 | Mexico v Czechia | 1.8-1.2 | 1-1 | 50%/23%/27% | **3-0** | ✅ |
 | 2026-06-24 | South Africa v South Korea | 1.0-1.2 | 0-1 | 31%/29%/39% | **1-0** | — |
 | 2026-06-24 | Canada v Switzerland | 1.2-1.2 | 1-1 | 36%/27%/38% | **1-2** | ✅ |
 | 2026-06-24 | Bosnia-Herzegovina v Qatar | 1.7-1.5 | 1-1 | 42%/23%/35% | **3-1** | ✅ |
 | 2026-06-24 | Scotland v Brazil | 1.0-2.0 | 0-1 | 18%/21%/61% | **0-3** | ✅ |
 | 2026-06-24 | Morocco v Haiti | 1.7-0.5 | 1-0 | 65%/24%/11% | **4-2** | ✅ |
-| 2026-06-25 | Ecuador v Germany | 0.9-1.1 | 0-1 | 31%/31%/38% | **2-1** | — |
 | 2026-06-25 | Tunisia v Netherlands | 0.8-1.3 | 0-1 | 24%/28%/47% | **1-3** | ✅ |
 | 2026-06-25 | Japan v Sweden | 1.6-1.0 | 1-0 | 51%/25%/24% | **1-1** | — |
-| 2026-06-25 | Curaçao v Ivory Coast | 0.7-2.2 | 0-2 | 11%/18%/71% | **0-2** | ✅ |
+| 2026-06-25 | Ecuador v Germany | 0.9-1.1 | 0-1 | 31%/31%/38% | **2-1** | — |
 | 2026-06-25 | Paraguay v Australia | 0.9-0.9 | 0-0 | 34%/32%/33% | **0-0** | — |
 | 2026-06-25 | United States v Türkiye | 1.8-1.2 | 1-1 | 50%/23%/27% | **2-3** | — |
+| 2026-06-25 | Curaçao v Ivory Coast | 0.7-2.2 | 0-2 | 11%/18%/71% | **0-2** | ✅ |
 | 2026-06-26 | Egypt v Iran | 1.0-0.9 | 0-0 | 36%/31%/32% | **1-1** | — |
 | 2026-06-26 | New Zealand v Belgium | 0.7-2.1 | 0-2 | 10%/19%/71% | **1-5** | ✅ |
 | 2026-06-26 | Cape Verde v Saudi Arabia | 0.7-0.9 | 0-0 | 27%/34%/39% | **0-0** | — |
 | 2026-06-26 | Uruguay v Spain | 1.1-1.1 | 1-1 | 34%/29%/37% | **0-1** | ✅ |
 | 2026-06-26 | Norway v France | 0.8-1.9 | 0-1 | 16%/21%/63% | **1-4** | ✅ |
 | 2026-06-26 | Senegal v Iraq | 1.2-0.7 | 1-0 | 47%/30%/23% | **5-0** | ✅ |
-| 2026-06-27 | Jordan v Argentina | 0.5-2.5 | 0-2 | 6%/14%/81% | **1-3** | ✅ |
-| 2026-06-27 | Croatia v Ghana | 1.9-0.8 | 1-0 | 63%/22%/15% | **2-1** | ✅ |
 | 2026-06-27 | Panama v England | 0.6-2.0 | 0-1 | 11%/20%/70% | **0-2** | ✅ |
-| 2026-06-27 | Algeria v Austria | 1.1-1.3 | 1-1 | 32%/27%/41% | **3-3** | — |
-| 2026-06-27 | Colombia v Portugal | 1.0-1.2 | 0-1 | 29%/29%/41% | **0-0** | — |
+| 2026-06-27 | Croatia v Ghana | 1.9-0.8 | 1-0 | 63%/22%/15% | **2-1** | ✅ |
 | 2026-06-27 | Congo DR v Uzbekistan | 1.0-0.8 | 0-0 | 41%/33%/26% | **3-1** | ✅ |
+| 2026-06-27 | Colombia v Portugal | 1.0-1.2 | 0-1 | 29%/29%/41% | **0-0** | — |
+| 2026-06-27 | Jordan v Argentina | 0.5-2.5 | 0-2 | 6%/14%/81% | **1-3** | ✅ |
+| 2026-06-27 | Algeria v Austria | 1.1-1.3 | 1-1 | 32%/27%/41% | **3-3** | — |
 | 2026-06-28 | South Africa v Canada | 0.8-1.0 | 0-0 | 28%/34%/39% | **0-1** | ✅ |
 | 2026-06-29 | Brazil v Japan | 1.5-1.1 | 1-1 | 47%/26%/27% | **2-1** | ✅ |
 | 2026-06-29 | Germany v Paraguay | 1.6-1.0 | 1-0 | 51%/25%/24% | **1-1** | — |
 | 2026-06-29 | Netherlands v Morocco | 1.2-1.1 | 1-1 | 38%/28%/34% | **1-1** | — |
+| 2026-06-30 | Ivory Coast v Norway | 1.3-1.1 | 1-1 | 41%/28%/32% | **1-2** | — |
+| 2026-06-30 | France v Sweden | 2.3-0.8 | 2-0 | 69%/18%/13% | **3-0** | ✅ |
+| 2026-06-30 | Mexico v Ecuador | 0.9-0.9 | 0-0 | 34%/33%/33% | **2-0** | ✅ |
 
 ## Forecast — next fixtures (with momentum nudge)
 
@@ -98,19 +101,18 @@ _`Mom` = recency-weighted form (+ scouted sentiment) applied as a small, capped 
 
 | Date | Fixture | Pred xG | Likely | P(H/D/A) | Over 2.5 | Mom H/A |
 |---|---|---|---|---|---|---|
-| 2026-06-30 | Ivory Coast v Norway | 1.4-1.1 | 1-1 | 43%/26%/30% | 45% | +0.09/+0.04 |
-| 2026-06-30 | France v Sweden | 2.7-0.8 | 2-0 | 76%/15%/9% | 66% | +0.16/-0.06 |
-| 2026-06-30 | Mexico v Ecuador | 1.0-0.9 | 0-0 | 37%/32%/31% | 30% | +0.12/+0.03 |
-| 2026-07-01 | England v Congo DR | 1.7-0.8 | 1-0 | 58%/24%/18% | 46% | +0.08/+0.02 |
-| 2026-07-01 | Belgium v Senegal | 1.9-1.0 | 1-0 | 58%/22%/20% | 55% | +0.18/+0.01 |
 | 2026-07-01 | United States v Bosnia-Herzegovina | 2.2-1.1 | 2-1 | 62%/20%/18% | 62% | +0.03/-0.02 |
-| 2026-07-02 | Switzerland v Algeria | 1.5-1.3 | 1-1 | 41%/25%/34% | 52% | +0.12/+0.01 |
+| 2026-07-01 | Belgium v Senegal | 1.9-1.0 | 1-0 | 58%/22%/20% | 55% | +0.18/+0.01 |
+| 2026-07-01 | England v Congo DR | 1.7-0.8 | 1-0 | 58%/24%/18% | 46% | +0.08/+0.02 |
 | 2026-07-02 | Spain v Austria | 1.6-1.2 | 1-1 | 48%/24%/28% | 53% | +0.11/+0.07 |
-| 2026-07-02 | Portugal v Croatia | 1.5-0.9 | 1-0 | 51%/26%/22% | 41% | +0.14/-0.03 |
-| 2026-07-03 | Argentina v Cape Verde | 2.4-0.6 | 2-0 | 77%/15%/7% | 56% | +0.18/+0.01 |
-| 2026-07-03 | Colombia v Ghana | 2.2-0.6 | 2-0 | 72%/18%/10% | 52% | +0.08/-0.09 |
+| 2026-07-02 | Portugal v Croatia | 1.5-0.9 | 1-0 | 51%/26%/22% | 41% | +0.14/-0.02 |
+| 2026-07-02 | Switzerland v Algeria | 1.5-1.3 | 1-1 | 41%/25%/34% | 52% | +0.12/+0.02 |
 | 2026-07-03 | Australia v Egypt | 1.1-0.9 | 1-0 | 40%/31%/30% | 32% | +0.03/+0.04 |
+| 2026-07-03 | Argentina v Cape Verde | 2.4-0.6 | 2-0 | 77%/15%/7% | 56% | +0.18/+0.01 |
+| 2026-07-03 | Colombia v Ghana | 2.2-0.6 | 2-0 | 72%/18%/10% | 52% | +0.08/-0.08 |
 | 2026-07-04 | Canada v Morocco | 1.1-1.2 | 1-1 | 34%/29%/38% | 39% | +0.11/+0.08 |
+| 2026-07-04 | Paraguay v France | 0.6-1.8 | 0-1 | 13%/22%/66% | 45% | -0.04/+0.18 |
+| 2026-07-05 | Brazil v Norway | 2.4-1.1 | 2-1 | 65%/18%/17% | 67% | +0.16/+0.05 |
 
 ## Squad & player context (forecast teams)
 
@@ -118,32 +120,30 @@ _From real player data: squad rating, average age (seniority), stylistic tilt, a
 
 | Team | Tier | Squad ovr | Avg age | Style | Talisman |
 |---|---|---|---|---|---|
-| Ivory Coast | Solid outfit | 78.0 | 27.9 | attack-leaning | F. Kessié |
-| France | Elite contender | 85.6 | 27.3 | attack-leaning | K. Mbappé |
-| Mexico | Strong side | 79.0 | 30.8 | attack-leaning | C. Vela |
-| England | Elite contender | 85.1 | 26.7 | attack-leaning | H. Kane |
-| Belgium | Elite contender | 83.8 | 29.7 | attack-leaning | K. De Bruyne |
 | United States | Developing team | 75.9 | 25.6 | well-balanced | C. Pulisic |
-| Switzerland | Strong side | 79.1 | 27.2 | well-balanced | R. Freuler |
+| Belgium | Elite contender | 83.8 | 29.7 | attack-leaning | K. De Bruyne |
+| England | Elite contender | 85.1 | 26.7 | attack-leaning | H. Kane |
 | Spain | Elite contender | 85.5 | 30.4 | well-balanced | Sergio Ramos |
 | Portugal | Elite contender | 84.2 | 27.6 | attack-leaning | Cristiano Ronaldo |
+| Switzerland | Strong side | 79.1 | 27.2 | well-balanced | R. Freuler |
+| Australia | Developing team | 72.8 | 29.2 | well-balanced | A. Mooy |
 | Argentina | Elite contender | 84.4 | 29.0 | attack-leaning | L. Messi |
 | Colombia | Strong side | 79.4 | 29.3 | attack-leaning | J. Cuadrado |
-| Australia | Developing team | 72.8 | 29.2 | well-balanced | A. Mooy |
 | Canada | Developing team | 73.6 | 27.9 | well-balanced | A. Davies |
-| Norway | Solid outfit | 76.8 | 26.1 | attack-leaning | E. Haaland |
-| Sweden | Solid outfit | 77.5 | 28.4 | attack-leaning | Z. Ibrahimović |
-| Ecuador | Developing team | 73.9 | 28.3 | attack-leaning | P. Estupiñán |
-| Congo DR | Developing team | 74.2 | 28.1 | attack-leaning | C. Bakambu |
-| Senegal | Solid outfit | 78.8 | 27.7 | well-balanced | S. Mané |
+| Paraguay | Developing team | 74.8 | 29.2 | attack-leaning | C. Ortiz |
+| Brazil | Elite contender | 85.4 | 29.9 | well-balanced | Neymar Jr |
 | Bosnia-Herzegovina | Developing team | 75.4 | 29.4 | well-balanced | E. Džeko |
-| Algeria | Solid outfit | 77.9 | 27.9 | attack-leaning | R. Mahrez |
+| Senegal | Solid outfit | 78.8 | 27.7 | well-balanced | S. Mané |
+| Congo DR | Developing team | 74.2 | 28.1 | attack-leaning | C. Bakambu |
 | Austria | Solid outfit | 78.9 | 27.8 | well-balanced | D. Alaba |
 | Croatia | Strong side | 80.6 | 28.2 | attack-leaning | L. Modrić |
+| Algeria | Solid outfit | 77.9 | 27.9 | attack-leaning | R. Mahrez |
+| Egypt | Developing team | 72.2 | 25.6 | attack-leaning | M. Salah |
 | Cape Verde | Developing team | 70.8 | 27.9 | attack-leaning | Jovane Cabral |
 | Ghana | Developing team | 75.8 | 27.0 | well-balanced | T. Partey |
-| Egypt | Developing team | 72.2 | 25.6 | attack-leaning | M. Salah |
 | Morocco | Strong side | 79.2 | 28.8 | well-balanced | A. Hakimi |
+| France | Elite contender | 85.6 | 27.3 | attack-leaning | K. Mbappé |
+| Norway | Solid outfit | 76.8 | 26.1 | attack-leaning | E. Haaland |
 
 ## Notes on method
 
